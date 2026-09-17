@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="450.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.com.beauty.spa.salon.controller.RegistroController">
+    <stylesheets>
+        <URL value="@/main/resources/css/registro-styles.css"/>
+    </stylesheets>
+   <children>
+      <VBox alignment="CENTER" layoutX="50.0" layoutY="30.0" prefHeight="440.0" prefWidth="350.0" spacing="15.0">
+         <children>
+            <Label styleClass="titulo-label" text="Registro de Clientes" />
+            
+            <TextField fx:id="txtNombre" promptText="Nombre" styleClass="text-field" />
+            <TextField fx:id="txtApellido" promptText="Apellido" styleClass="text-field" />
+            <TextField fx:id="txtNombreUsuario" promptText="Nombre de Usuario" styleClass="text-field" />
+            <TextField fx:id="txtCorreo" promptText="Correo Electrónico" styleClass="text-field" />
+            <PasswordField fx:id="txtContrasena" promptText="Contraseña" styleClass="text-field" />
+            
+            <Button fx:id="btnRegistrar" mnemonicParsing="false" onAction="#handleRegistrar" prefHeight="38.0" prefWidth="350.0" styleClass="button-action" text="Registrarse" />
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

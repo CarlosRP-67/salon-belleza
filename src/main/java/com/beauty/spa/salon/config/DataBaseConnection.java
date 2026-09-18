@@ -12,7 +12,7 @@ import java.sql.SQLException;
  *
  * @author Carlitos
  */
-public class MySQLConnection {
+public class DataBaseConnection {
     private static Connection conn;
     
        public static Connection getConnection() throws SQLException {

@@ -95,4 +95,9 @@ public class Usuario {
     public void setIdRol(int idRol) {
         this.idRol = idRol;
     }
+
+    @Override
+    public String toString() {
+        return nombre + " " + apellido;
+    }
 }

@@ -1,54 +1,142 @@
-
 package main.java.com.beauty.spa.salon.controller;
 
 import main.java.com.beauty.spa.salon.service.UsuarioService;
+import main.java.com.beauty.spa.salon.util.SceneManager;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 
-/**
- * FXML Controller class
- *
- * @author informatica
- */
 public class RegistroController implements Initializable {
 
-    // Campos vinculados a la vista FXML (Asegúrate de que tengan estos fx:id en Scene Builder)
     @FXML private TextField txtNombre;
     @FXML private TextField txtApellido;
     @FXML private TextField txtNombreUsuario;
     @FXML private TextField txtCorreo;
     @FXML private PasswordField txtContrasena;
+    @FXML private TextField txtContrasenaVisible;
+    @FXML private Button btnTogglePassword;
+    @FXML private ComboBox<String> cmbRol;
+    @FXML private Button btnRegresarLogin;
+    @FXML private ImageView imgBanner;
 
+    private boolean mostrandoPassword = false;
     private final UsuarioService usuarioService = new UsuarioService();
 
- 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        // Inyecta el CSS automáticamente en cuanto la escena esté lista
+        txtNombre.sceneProperty().addListener((observable, oldScene, newScene) -> {
+            if (newScene != null) {
+                try {
+                    String css = getClass().getResource("/css/registro-styles.css").toExternalForm();
+                    if (css != null && !newScene.getStylesheets().contains(css)) {
+                        newScene.getStylesheets().add(css);
+                    }
+                } catch (Exception e) {
+                    try {
+                        String cssAlt = getClass().getResource("/main/resources/css/registro-styles.css").toExternalForm();
+                        if (cssAlt != null && !newScene.getStylesheets().contains(cssAlt)) {
+                            newScene.getStylesheets().add(cssAlt);
+                        }
+                    } catch (Exception ex) {
+                        System.out.println("No se pudo cargar el CSS en el controlador: " + ex.getMessage());
+                    }
+                }
+            }
+        });
+
+        // Carga de la imagen del banner lateral
+        try {
+            Image image = new Image(getClass().getResourceAsStream("/images/salon-registro.png"));
+            if (image != null && imgBanner != null) {
+                imgBanner.setImage(image);
+            }
+        } catch (Exception e) {
+            try {
+                Image image2 = new Image(getClass().getResourceAsStream("/main/resources/images/salon-registro.png"));
+                if (image2 != null && imgBanner != null) {
+                    imgBanner.setImage(image2);
+                }
+            } catch (Exception ex) {
+                System.out.println("No se pudo cargar la imagen del banner: " + ex.getMessage());
+            }
+        }
+
+        // Llenado del ComboBox de roles
+        cmbRol.setItems(FXCollections.observableArrayList("1 - Administrador", "2 - Cliente"));
     }    
 
-    // Método que se ejecutará al hacer clic en el botón de registrar en tu vista
+    @FXML
+    private void handleTogglePassword(ActionEvent event) {
+        mostrandoPassword = !mostrandoPassword;
+        
+        if (mostrandoPassword) {
+            txtContrasenaVisible.setText(txtContrasena.getText());
+            txtContrasenaVisible.setVisible(true);
+            txtContrasenaVisible.setManaged(true);
+            
+            txtContrasena.setVisible(false);
+            txtContrasena.setManaged(false);
+            
+            btnTogglePassword.setText("🔒");
+        } else {
+            txtContrasena.setText(txtContrasenaVisible.getText());
+            txtContrasena.setVisible(true);
+            txtContrasena.setManaged(true);
+            
+            txtContrasenaVisible.setVisible(false);
+            txtContrasenaVisible.setManaged(false);
+            
+            btnTogglePassword.setText("👁");
+        }
+    }
+
     @FXML
     private void handleRegistrar() {
         String nombre = txtNombre.getText().trim();
         String apellido = txtApellido.getText().trim();
         String nombreUsuario = txtNombreUsuario.getText().trim();
         String correo = txtCorreo.getText().trim();
-        String contrasena = txtContrasena.getText().trim();
-        int rolCliente = 2;
+        
+        String contrasena = mostrandoPassword ? txtContrasenaVisible.getText().trim() : txtContrasena.getText().trim();
 
-        // Llamamos al servicio para validar y registrar
-        boolean registrado = usuarioService.registrarUsuario(nombre, apellido, nombreUsuario, correo, contrasena, rolCliente);
+        String rolSeleccionado = cmbRol.getValue();
+        if (rolSeleccionado == null) {
+            mostrarAlerta(Alert.AlertType.WARNING, "Campo Requerido", "Por favor seleccione un rol para el usuario.");
+            return;
+        }
+
+        int idRol = Character.getNumericValue(rolSeleccionado.charAt(0));
+        boolean registrado = usuarioService.registrarUsuario(nombre, apellido, nombreUsuario, correo, contrasena, idRol);
 
         if (registrado) {
-            mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito", "¡Usuario registrado correctamente en la base de datos!");
+            mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito", "¡Usuario registrado correctamente con rol " + idRol + "!");
             limpiarCampos();
         } else {
-            mostrarAlerta(Alert.AlertType.ERROR, "Error de Registro", "No se pudo registrar. Verifique que los campos no estén vacíos o que el correo/usuario no existan ya.");
+            mostrarAlerta(Alert.AlertType.ERROR, "Error de Registro", "No se pudo registrar. Verifique los campos o si el correo/usuario ya existen.");
+        }
+    }
+
+    @FXML
+    private void handleRegresarLogin(ActionEvent event) {
+        try {
+            Stage stageActual = (Stage) btnRegresarLogin.getScene().getWindow();
+            SceneManager sceneManager = new SceneManager(stageActual);
+            sceneManager.showLoginView();
+        } catch (Exception e) {
+            System.err.println("Error al regresar al login: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -66,5 +154,10 @@ public class RegistroController implements Initializable {
         txtNombreUsuario.clear();
         txtCorreo.clear();
         txtContrasena.clear();
+        txtContrasenaVisible.clear();
+        cmbRol.getSelectionModel().clearSelection();
+        if (mostrandoPassword) {
+            handleTogglePassword(null);
+        }
     }
 }

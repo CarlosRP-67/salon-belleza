@@ -1,5 +1,5 @@
 /* ==========================================
-   ESTILOS GENERALES Y PANEL IZQUIERDO (IMAGEN)
+   ESTILOS GENERALES Y PANEL IZQUIERDO (IMAGEN DE FONDO)
    ========================================== */
 .mainFxmlClass {
     -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
@@ -7,10 +7,13 @@
 }
 
 .banner-container {
-    -fx-background-color: #f4f1ea;
+    -fx-background-image: url('../images/salon-registro.png');
+    -fx-background-size: cover;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
 }
 
-/* El degradado original que te gustó para la imagen */
+/* El degradado original sobre la imagen para que resalte el texto */
 .overlay-box {
     -fx-padding: 30;
     -fx-background-color: linear-gradient(to top, rgba(30, 30, 30, 0.7), transparent);
@@ -30,16 +33,13 @@
 
 
 /* ==========================================
-   PANEL DERECHO: FORMULARIO (PALETA DE COLORES)
+   PANEL DERECHO: FORMULARIO (RESPONSIVO)
    ========================================== */
-
-/* A) Tonos Neutros Suaves: Blanco Hueso / Gris Perla para fondos */
 .form-container {
     -fx-padding: 20 35 20 35;
     -fx-background-color: #FDFBF7; 
 }
 
-/* C) Tonos de Contraste: Azul Profundo / Gris Grafito para Títulos */
 .titulo-label {
     -fx-font-size: 22px;
     -fx-font-weight: bold;
@@ -63,14 +63,12 @@
     -fx-text-fill: #2C3E50;
 }
 
-/* B) Acentos Cálidos (Dorado Discreto) al enfocar los inputs */
 .text-field:focused, .password-field:focused, .combo-box:focused {
     -fx-background-color: #FFFFFF;
     -fx-border-color: #C5A059; 
     -fx-border-width: 1.5px;
 }
 
-/* Botón flotante del ojo dentro de la contraseña */
 .eye-button {
     -fx-background-color: transparent;
     -fx-text-fill: #7F8C8D;
@@ -85,7 +83,6 @@
     -fx-background-color: transparent;
 }
 
-/* C) Botón de Acción Principal: Azul Profundo / Gris Grafito */
 .button-action {
     -fx-background-color: #2C3E50; 
     -fx-text-fill: #FFFFFF;

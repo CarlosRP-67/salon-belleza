@@ -13,8 +13,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 public class RegistroController implements Initializable {
@@ -28,7 +26,6 @@ public class RegistroController implements Initializable {
     @FXML private Button btnTogglePassword;
     @FXML private ComboBox<String> cmbRol;
     @FXML private Button btnRegresarLogin;
-    @FXML private ImageView imgBanner;
 
     private boolean mostrandoPassword = false;
     private final UsuarioService usuarioService = new UsuarioService();
@@ -55,23 +52,6 @@ public class RegistroController implements Initializable {
                 }
             }
         });
-
-        // Carga de la imagen del banner lateral
-        try {
-            Image image = new Image(getClass().getResourceAsStream("/images/salon-registro.png"));
-            if (image != null && imgBanner != null) {
-                imgBanner.setImage(image);
-            }
-        } catch (Exception e) {
-            try {
-                Image image2 = new Image(getClass().getResourceAsStream("/main/resources/images/salon-registro.png"));
-                if (image2 != null && imgBanner != null) {
-                    imgBanner.setImage(image2);
-                }
-            } catch (Exception ex) {
-                System.out.println("No se pudo cargar la imagen del banner: " + ex.getMessage());
-            }
-        }
 
         // Llenado del ComboBox de roles
         cmbRol.setItems(FXCollections.observableArrayList("1 - Administrador", "2 - Cliente"));

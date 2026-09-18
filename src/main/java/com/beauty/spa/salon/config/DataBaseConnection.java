@@ -12,10 +12,14 @@ import java.sql.SQLException;
  *
  * @author Carlitos
  */
-public class MySQLConnection {
+public class DataBaseConnection {
     private static Connection conn;
     
-       public static Connection getConnection() throws SQLException {
+    public DataBaseConnection(){
+        
+    }
+    
+       public static Connection getDataBaseConnection() throws SQLException {
            if  (conn == null || conn.isClosed() ) {
                   conn = DriverManager.getConnection(Credentials.URL_DB, Credentials.USER_DB, Credentials.PASS_DB) ;
            }

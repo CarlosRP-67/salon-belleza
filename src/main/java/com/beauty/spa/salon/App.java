@@ -1,38 +1,32 @@
-
 package main.java.com.beauty.spa.salon;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import main.java.com.beauty.spa.salon.util.SceneManager;
 
-/**
- *
- * @author Carlitos
- */
 public class App extends Application {
 
+    private Stage stage;
+
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage stage) throws Exception {
+        this.stage = stage;
+
+        // 1. Configurar el icono de la ventana / barra de tareas
         try {
-            // Carga la vista FXML desde la carpeta resources/view
-            Parent root = FXMLLoader.load(getClass().getResource("/main/resources/view/registro-view.fxml"));
-            
-            Scene scene = new Scene(root);
-            primaryStage.setTitle("Salón de Belleza - Registro de Usuarios");
-            primaryStage.setScene(scene);
-            primaryStage.show();
-            
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/main/resources/images/beauty-logo.png")));
         } catch (Exception e) {
-            System.err.println("Error al iniciar la aplicación: " + e.getMessage());
-            e.printStackTrace();
+            System.out.println("No se pudo cargar el icono: " + e.getMessage());
         }
+
+        // 2. Instanciar el SceneManager pasando el stage y mostrando la vista inicial
+        SceneManager sceneManager = new SceneManager(stage);
+        sceneManager.showLoginView(); // O la vista inicial configurada en tu SceneManager
+        
+        stage.show();
     }
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
         launch(args);
     }

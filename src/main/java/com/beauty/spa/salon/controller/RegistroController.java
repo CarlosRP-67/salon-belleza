@@ -26,12 +26,9 @@ public class RegistroController implements Initializable {
 
     private final UsuarioService usuarioService = new UsuarioService();
 
-    /**
-     * Initializes the controller class.
-     */
+ 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
     }    
 
     // Método que se ejecutará al hacer clic en el botón de registrar en tu vista
@@ -42,7 +39,7 @@ public class RegistroController implements Initializable {
         String nombreUsuario = txtNombreUsuario.getText().trim();
         String correo = txtCorreo.getText().trim();
         String contrasena = txtContrasena.getText().trim();
-        int rolCliente = 2; // El rol 2 corresponde a 'Cliente' en tu base de datos
+        int rolCliente = 2;
 
         // Llamamos al servicio para validar y registrar
         boolean registrado = usuarioService.registrarUsuario(nombre, apellido, nombreUsuario, correo, contrasena, rolCliente);

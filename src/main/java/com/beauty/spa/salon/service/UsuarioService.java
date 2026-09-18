@@ -33,7 +33,7 @@ public class UsuarioService {
         usuario.setNombreUsuario(nombreUsuario);
         usuario.setCorreo(correo);
         usuario.setContrasena(contrasenaEncriptada);
-        usuario.setIdRol(idRol); // 2 para Cliente por defecto
+        usuario.setIdRol(idRol);
 
         return usuarioRepository.registrar(usuario);
     }

@@ -1,7 +1,6 @@
-
 package main.java.com.beauty.spa.salon.repository;
 
-import main.java.com.beauty.spa.salon.config.MySQLConnection;
+import main.java.com.beauty.spa.salon.config.DataBaseConnection;
 import main.java.com.beauty.spa.salon.model.Usuario;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,7 +15,7 @@ public class UsuarioRepository {
     public boolean registrar(Usuario usuario) {
         String sql = "INSERT INTO usuarios (nombre, apellido, nombre_usuario, correo, contrasena, id_rol) VALUES (?, ?, ?, ?, ?, ?)";
         
-        try (Connection conexion = MySQLConnection.getConnection();
+        try (Connection conexion = DataBaseConnection.getDataBaseConnection();
              PreparedStatement pstmt = conexion.prepareStatement(sql)) {
             
             pstmt.setString(1, usuario.getNombre());

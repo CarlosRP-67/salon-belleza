@@ -9,10 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-/**
- * Gestor centralizado para la navegación de vistas en JavaFX.
- * @author informatica
- */
+
 public class SceneManager {
 
     private final Stage stage;
@@ -34,7 +31,6 @@ public class SceneManager {
             FXMLLoader loader = new FXMLLoader();
             Parent root = loader.load(archivoFisico);
             
-            // Tamaño equilibrado inicial: 850 de ancho por 500 de alto
             Scene scene = new Scene(root, 850, 500);
             
             if (rutaCss != null) {
@@ -54,5 +50,12 @@ public class SceneManager {
             System.out.println("¡ERROR CRÍTICO! No se pudo cargar la vista en la ruta: " + rutaFxml);
             e.printStackTrace();
         }
+    
+    
     }
+    
+    public void showRegistroView() {
+        cargarVistaFisica("src/main/resources/view/registro-view.fxml", "src/main/resources/css/registro-styles.css", "Beauty Spa - Registro de Usuario");
+    }
+    
 }

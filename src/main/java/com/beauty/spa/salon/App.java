@@ -13,17 +13,16 @@ public class App extends Application {
     public void start(Stage stage) throws Exception {
         this.stage = stage;
 
-        // 1. Configurar el icono de la ventana / barra de tareas (ajusta la ruta según tus recursos)
-        // Asegúrate de que la imagen exista en esa ruta dentro de tus resources
+        // 1. Configurar el icono de la ventana / barra de tareas
         try {
             stage.getIcons().add(new Image(getClass().getResourceAsStream("/main/resources/images/beauty-logo.png")));
         } catch (Exception e) {
             System.out.println("No se pudo cargar el icono: " + e.getMessage());
         }
 
-        // 2. Instanciar el SceneManager pasando el stage y mostrando la vista de Login
+        // 2. Instanciar el SceneManager pasando el stage y mostrando la vista inicial
         SceneManager sceneManager = new SceneManager(stage);
-        sceneManager.showLoginView(); // O el método que maneje tu login en el SceneManager
+        sceneManager.showLoginView(); // O la vista inicial configurada en tu SceneManager
         
         stage.show();
     }

@@ -41,7 +41,7 @@ public class SceneManager {
     }
 
     public void cargarVistaClasspath(String rutaFxml, String rutaCss, String titulo) {
-        // Redirige llamadas de classpath a la ruta física real
+
         String fxmlFisico = "src/main/resources" + (rutaFxml.startsWith("/") ? rutaFxml : "/" + rutaFxml);
         String cssFisico = (rutaCss != null) ? "src/main/resources" + (rutaCss.startsWith("/") ? rutaCss : "/" + rutaCss) : null;
         

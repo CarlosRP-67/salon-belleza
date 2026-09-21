@@ -12,7 +12,6 @@ import java.util.List;
 
 public class ProductoRepository {
 
-    // Obtener los productos cargados con el script SQL
     public List<Productos> obtenerProductosDisponibles() {
         List<Productos> lista = new ArrayList<>();
         String sql = "SELECT id_producto, nombre_producto, descripcion, precio, stock FROM productos WHERE stock > 0";
@@ -38,13 +37,13 @@ public class ProductoRepository {
         return lista;
     }
 
-    // Registrar la compra descontando del inventario
+
     public boolean realizarCompra(int idCliente, int idProducto, int cantidad, double total) {
         String sqlVenta = "INSERT INTO ventas (id_cliente, id_producto, cantidad, total, fecha_venta) VALUES (?, ?, ?, ?, NOW())";
         String sqlUpdateStock = "UPDATE productos SET stock = stock - ? WHERE id_producto = ?";
 
         try (Connection conn = DataBaseConnection.getDataBaseConnection()) {
-            conn.setAutoCommit(false); // Transacción segura
+            conn.setAutoCommit(false); 
 
             try (PreparedStatement stmVenta = conn.prepareStatement(sqlVenta);
                  PreparedStatement stmStock = conn.prepareStatement(sqlUpdateStock)) {

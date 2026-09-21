@@ -8,7 +8,7 @@ import javafx.scene.control.*;
 import javafx.util.StringConverter;
 import main.java.com.beauty.spa.salon.model.Productos;
 import main.java.com.beauty.spa.salon.repository.ProductoRepository;
-import main.java.com.beauty.spa.salon.util.SceneManager; // O la clase donde manejes la sesión activa
+import main.java.com.beauty.spa.salon.util.SceneManager; 
 
 public class ProductoController {
 
@@ -24,19 +24,16 @@ public class ProductoController {
     @FXML
     public void initialize() {
         configurarComboBoxProductos();
-
-        // Configurar Spinner (min: 1, max: 100, inicio: 1)
+        
         SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, 1);
         spCantidad.setValueFactory(valueFactory);
 
         cargarProductos();
 
-        // Actualizar detalles al seleccionar producto
         cmbProductos.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             actualizarDetallesProducto(newVal);
         });
 
-        // Recalcular total al cambiar cantidad
         spCantidad.valueProperty().addListener((obs, oldVal, newVal) -> {
             recalcularTotal();
         });
@@ -72,7 +69,7 @@ public class ProductoController {
 
     private void cargarProductos() {
         listaProductos.clear();
-        // Llama directamente al método de tu ProductoRepository
+   
         listaProductos.addAll(productoRepository.obtenerProductosDisponibles());
         cmbProductos.setItems(listaProductos);
     }
@@ -113,10 +110,10 @@ public class ProductoController {
 
         double total = prod.getPrecio() * cantidad;
         
-        // Obtener el ID del cliente logueado (Ajusta la llamada según tu gestor de sesiones)
+
         int idClienteActual = SceneManager.getIdClienteActual(); 
 
-        // Ejecuta la transacción (Inserta en ventas y actualiza stock)
+
         boolean exito = productoRepository.realizarCompra(idClienteActual, prod.getIdProducto(), cantidad, total);
 
         if (exito) {
@@ -124,7 +121,7 @@ public class ProductoController {
                 String.format("¡Compra realizada con éxito!\nProducto: %s\nCantidad: %d\nTotal: Q%.2f", 
                 prod.getNombreProducto(), cantidad, total));
             
-            cargarProductos(); // Recarga la lista con el stock actualizado
+            cargarProductos(); 
             limpiarFormulario();
         } else {
             mostrarAlerta(Alert.AlertType.ERROR, "Error de Transacción", "No se pudo procesar la compra en la base de datos.");

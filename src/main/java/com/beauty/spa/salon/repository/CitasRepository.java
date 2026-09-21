@@ -50,8 +50,7 @@ public class CitasRepository {
                 String servicio = rs.getString("nombre_servicio");
                 Timestamp fechaHora = rs.getTimestamp("fecha_hora_cita");
                 String estado = rs.getString("estado_cita");
-
-                // Formato igual al agregarse visualmente: Servicio - YYYY-MM-DD HH:mm [Estado]
+                
                 String citaFormateada = servicio + " - " + fechaHora.toString().substring(0, 16) + " [" + estado + "]";
                 listaCitas.add(citaFormateada);
             }

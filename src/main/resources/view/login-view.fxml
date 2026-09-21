@@ -8,11 +8,12 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="850.0" 
-            xmlns="http://javafx.com/javafx/21" 
-            xmlns:fx="http://javafx.com/fxml/1" 
+<AnchorPane id="AnchorPane" 
+            prefHeight="500.0" 
+            prefWidth="850.0" 
+            xmlns="http://javafx.com" 
+            xmlns:fx="http://javafx.com" 
             fx:controller="main.java.com.beauty.spa.salon.controller.LoginController">
    <children>
       <HBox prefHeight="500.0" prefWidth="850.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -40,11 +41,9 @@
                   <VBox alignment="CENTER" prefHeight="400.0" prefWidth="320.0" spacing="12.0" 
                         AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="52.5" AnchorPane.rightAnchor="52.5" AnchorPane.topAnchor="50.0">
                      <children>
-                        <Label styleClass="title-label" text="Beauty Spa">
-                           <font>
-                              <Font name="System Bold" size="26.0" />
-                           </font>
-                        </Label>
+                        
+                        <!-- Título corregido usando la estructura estándar de JavaFX para fuentes -->
+                        <Label styleClass="title-label" text="Beauty Spa" />
                         
                         <Label styleClass="subtitle-label" text="Inicia sesión para continuar" />
                         

@@ -9,53 +9,84 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-
 public class SceneManager {
 
     private final Stage stage;
+    private static int idClienteActual;
 
     public SceneManager(Stage stage) {
         this.stage = stage;
     }
 
+    // --- GESTIÓN DE SESIÓN DE USUARIO ---
+    public static void setIdClienteActual(int idCliente) {
+        idClienteActual = idCliente;
+    }
+
+    public static int getIdClienteActual() {
+        return idClienteActual;
+    }
+
+    // --- MÉTODOS DE NAVEGACIÓN ---
     public void showLoginView() {
         cargarVistaFisica("src/main/resources/view/login-view.fxml", "src/main/resources/css/login-view.css", "Beauty Spa - Iniciar Sesión");
     }
 
     public void showMainDashboard() {
-        cargarVistaFisica("src/main/resources/view/dashboard-view.fxml", null, "Beauty Spa - Menú Principal");
+        // Carga el contenedor con el TabPane (dashboard-view.fxml)
+        cargarVistaFisica("src/main/resources/view/dashboard-view.fxml", "src/main/resources/css/usuarios-citas-view.css", "Beauty Spa - Menú Principal");
+    }
+
+    public void showProductosView() {
+        cargarVistaFisica("src/main/resources/view/venta-productos-view.fxml", "src/main/resources/css/venta-produtos-view.css", "Beauty Spa - Catálogo de Productos");
+    }
+
+    // --- MÉTODOS DE CARGA COMPATIBLES ---
+    public void cargarVistaClasspath(String rutaFxml, String rutaCss, String titulo) {
+        // Redirige llamadas de classpath a la ruta física real
+        String fxmlFisico = "src/main/resources" + (rutaFxml.startsWith("/") ? rutaFxml : "/" + rutaFxml);
+        String cssFisico = (rutaCss != null) ? "src/main/resources" + (rutaCss.startsWith("/") ? rutaCss : "/" + rutaCss) : null;
+        
+        cargarVistaFisica(fxmlFisico, cssFisico, titulo);
     }
 
     public void cargarVistaFisica(String rutaFxml, String rutaCss, String titulo) {
-        try (FileInputStream archivoFisico = new FileInputStream(rutaFxml)) {
+        File archivoFxml = new File(rutaFxml);
+        
+        if (!archivoFxml.exists()) {
+            System.err.println("¡ERROR! No existe el archivo físico en la ruta: " + archivoFxml.getAbsolutePath());
+            return;
+        }
+
+        try (FileInputStream fis = new FileInputStream(archivoFxml)) {
             FXMLLoader loader = new FXMLLoader();
-            Parent root = loader.load(archivoFisico);
             
-            Scene scene = new Scene(root, 850, 500);
-            
+            // Define el directorio contenedor para que los <fx:include> de las pestañas funcionen perfectamente
+            loader.setLocation(archivoFxml.getParentFile().toURI().toURL());
+
+            Parent root = loader.load(fis);
+
+            Scene scene = new Scene(root, 880, 550);
+
             if (rutaCss != null) {
                 File cssFile = new File(rutaCss);
                 if (cssFile.exists()) {
                     scene.getStylesheets().add(cssFile.toURI().toString());
+                } else {
+                    System.out.println("Advertencia: No se encontró el CSS en: " + rutaCss);
                 }
             }
-            
+
             stage.setScene(scene);
             stage.setTitle(titulo);
             stage.setMinWidth(750);
             stage.setMinHeight(450);
             stage.centerOnScreen();
             stage.show();
+
         } catch (IOException e) {
-            System.out.println("¡ERROR CRÍTICO! No se pudo cargar la vista en la ruta: " + rutaFxml);
+            System.err.println("¡ERROR CRÍTICO! Falló la carga de la vista: " + rutaFxml);
             e.printStackTrace();
         }
-    
-    
     }
-    
-    public void showRegistroView() {
-        cargarVistaFisica("src/main/resources/view/registro-view.fxml", "src/main/resources/css/registro-styles.css", "Beauty Spa - Registro de Usuario");
-    }
-    
 }

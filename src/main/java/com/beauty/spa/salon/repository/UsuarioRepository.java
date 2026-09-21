@@ -1,15 +1,13 @@
+
 package main.java.com.beauty.spa.salon.repository;
 
-import main.java.com.beauty.spa.salon.config.DataBaseConnection;
 import main.java.com.beauty.spa.salon.model.Usuario;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import main.java.com.beauty.spa.salon.config.DataBaseConnection;
 
-/**
- *
- * @author informatica
- */
+
 public class UsuarioRepository {
 
     public boolean registrar(Usuario usuario) {

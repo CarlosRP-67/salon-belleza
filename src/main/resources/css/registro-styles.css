@@ -1,111 +1,42 @@
-/* ==========================================
-   ESTILOS GENERALES Y PANEL IZQUIERDO (IMAGEN DE FONDO)
-   ========================================== */
+/* A) Fondo general: Tonos Neutros Suaves (Blanco Hueso / Gris Perla) */
 .mainFxmlClass {
-    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
-    -fx-background-color: #F8F9FA;
+    -fx-background-color: #F8F9FA; /* Blanco hueso / gris perla muy sutil */
 }
 
-.banner-container {
-    -fx-background-image: url('../images/salon-registro.png');
-    -fx-background-size: cover;
-    -fx-background-position: center;
-    -fx-background-repeat: no-repeat;
-}
-
-/* El degradado original sobre la imagen para que resalte el texto */
-.overlay-box {
-    -fx-padding: 30;
-    -fx-background-color: linear-gradient(to top, rgba(30, 30, 30, 0.7), transparent);
-}
-
-.banner-title {
-    -fx-text-fill: #ffffff;
-    -fx-font-size: 20px;
-    -fx-font-weight: bold;
-}
-
-.banner-subtitle {
-    -fx-text-fill: #e0e0e0;
-    -fx-font-size: 12px;
-    -fx-wrap-text: true;
-}
-
-
-/* ==========================================
-   PANEL DERECHO: FORMULARIO (RESPONSIVO)
-   ========================================== */
-.form-container {
-    -fx-padding: 20 35 20 35;
-    -fx-background-color: #FDFBF7; 
-}
-
+/* Títulos principales: Azul Profundo / Grafito para formalidad y confianza */
 .titulo-label {
     -fx-font-size: 22px;
     -fx-font-weight: bold;
-    -fx-text-fill: #2C3E50; 
-    -fx-padding: 0 0 2 0;
+    -fx-text-fill: #2C3E50; /* Azul profundo / Gris grafito */
+    -fx-padding: 0 0 10 0;
 }
 
-.subtitulo-label {
-    -fx-text-fill: #7F8C8D; 
-    -fx-font-size: 12px;
-    -fx-padding: 0 0 8 0;
-}
-
-.text-field, .password-field, .combo-box {
+/* Campos de texto estilizados */
+.text-field, .password-field {
     -fx-background-color: #FFFFFF;
     -fx-border-color: #D5DBDB;
-    -fx-border-radius: 6px;
-    -fx-background-radius: 6px;
-    -fx-padding: 8px;
-    -fx-font-size: 13px;
-    -fx-text-fill: #2C3E50;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 10px;
+    -fx-font-size: 14px;
 }
 
-.text-field:focused, .password-field:focused, .combo-box:focused {
-    -fx-background-color: #FFFFFF;
-    -fx-border-color: #C5A059; 
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #D4AC0D; /* Acento discreto (Dorado / Rosa cuarzo al enfocar) */
     -fx-border-width: 1.5px;
 }
 
-.eye-button {
-    -fx-background-color: transparent;
-    -fx-text-fill: #7F8C8D;
-    -fx-font-size: 14px;
-    -fx-cursor: hand;
-    -fx-padding: 0 10 0 0;
-    -fx-background-insets: 0;
-}
-
-.eye-button:hover {
-    -fx-text-fill: #C5A059;
-    -fx-background-color: transparent;
-}
-
+/* C) Botones de Acción: Azul Profundo / Gris Grafito con toque de elegancia */
 .button-action {
-    -fx-background-color: #2C3E50; 
+    -fx-background-color: #2C3E50; /* Azul profundo profesional */
     -fx-text-fill: #FFFFFF;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
-    -fx-border-radius: 6px;
-    -fx-background-radius: 6px;
-    -fx-padding: 10px;
+    -fx-background-radius: 5px;
     -fx-cursor: hand;
+    -fx-transition: 0.3s;
 }
 
 .button-action:hover {
-    -fx-background-color: #34495E;
-}
-
-.link-button {
-    -fx-background-color: transparent;
-    -fx-text-fill: #2C3E50;
-    -fx-underline: true;
-    -fx-cursor: hand;
-    -fx-font-size: 12px;
-}
-
-.link-button:hover {
-    -fx-text-fill: #C5A059;
+    -fx-background-color: #34495E; /* Tono ligeramente más claro al pasar el mouse */
 }

@@ -18,7 +18,6 @@ public class SceneManager {
         this.stage = stage;
     }
 
-    // --- GESTIÓN DE SESIÓN DE USUARIO ---
     public static void setIdClienteActual(int idCliente) {
         idClienteActual = idCliente;
     }
@@ -27,13 +26,13 @@ public class SceneManager {
         return idClienteActual;
     }
 
-    // --- MÉTODOS DE NAVEGACIÓN ---
+
     public void showLoginView() {
         cargarVistaFisica("src/main/resources/view/login-view.fxml", "src/main/resources/css/login-view.css", "Beauty Spa - Iniciar Sesión");
     }
 
     public void showMainDashboard() {
-        // Carga el contenedor con el TabPane (dashboard-view.fxml)
+
         cargarVistaFisica("src/main/resources/view/dashboard-view.fxml", "src/main/resources/css/usuarios-citas-view.css", "Beauty Spa - Menú Principal");
     }
 
@@ -41,7 +40,6 @@ public class SceneManager {
         cargarVistaFisica("src/main/resources/view/venta-productos-view.fxml", "src/main/resources/css/venta-produtos-view.css", "Beauty Spa - Catálogo de Productos");
     }
 
-    // --- MÉTODOS DE CARGA COMPATIBLES ---
     public void cargarVistaClasspath(String rutaFxml, String rutaCss, String titulo) {
         // Redirige llamadas de classpath a la ruta física real
         String fxmlFisico = "src/main/resources" + (rutaFxml.startsWith("/") ? rutaFxml : "/" + rutaFxml);
@@ -61,7 +59,6 @@ public class SceneManager {
         try (FileInputStream fis = new FileInputStream(archivoFxml)) {
             FXMLLoader loader = new FXMLLoader();
             
-            // Define el directorio contenedor para que los <fx:include> de las pestañas funcionen perfectamente
             loader.setLocation(archivoFxml.getParentFile().toURI().toURL());
 
             Parent root = loader.load(fis);

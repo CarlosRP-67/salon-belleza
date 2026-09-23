@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="15.0" styleClass="main-container" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.com.beauty.spa.salon.controller.ProductoController">
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
+   <children>
+      <Label styleClass="titulo-spa" text="Catálogo de Productos" />
+      
+      <HBox alignment="CENTER_LEFT" spacing="10.0">
+         <children>
+            <Label styleClass="label-formulario" text="Producto:" />
+            <ComboBox fx:id="cmbProductos" promptText="Seleccione un producto" />
+         </children>
+      </HBox>
+
+      <VBox spacing="5.0">
+         <children>
+            <Label styleClass="label-formulario" text="Descripción:" />
+            <Label fx:id="lblDescripcion" text="-" />
+         </children>
+      </VBox>
+
+      <HBox alignment="CENTER_LEFT" spacing="10.0">
+         <children>
+            <Label styleClass="label-formulario" text="Precio Unitario:" />
+            <Label fx:id="lblPrecioUnitario" text="Q0.00" />
+         </children>
+      </HBox>
+
+      <HBox alignment="CENTER_LEFT" spacing="10.0">
+         <children>
+            <Label styleClass="label-formulario" text="Cantidad:" />
+            <Spinner fx:id="spCantidad" />
+         </children>
+      </HBox>
+
+      <HBox alignment="CENTER_LEFT" spacing="10.0">
+         <children>
+            <Label styleClass="label-formulario" text="Total a Pagar:" />
+            <Label fx:id="lblTotal" text="Q0.00" />
+         </children>
+      </HBox>
+
+      <HBox spacing="15.0">
+         <children>
+            <Button fx:id="btnComprar" onAction="#handleComprarAction" styleClass="button-principal" text="Comprar" />
+         </children>
+      </HBox>
+   </children>
+</VBox>

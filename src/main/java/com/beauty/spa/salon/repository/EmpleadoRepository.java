@@ -1,18 +1,17 @@
 package main.java.com.beauty.spa.salon.repository;
 
-import main.java.com.beauty.spa.salon.config.DataBaseConnection;
-import main.java.com.beauty.spa.salon.model.Empleado;
 
+import main.java.com.beauty.spa.salon.model.Empleado;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import main.java.com.beauty.spa.salon.config.DataBaseConnection;
 
 public class EmpleadoRepository {
 
-    // Listar todos los empleados
     public List<Empleado> listarTodos() {
         List<Empleado> lista = new ArrayList<>();
         String sql = "SELECT e.id_empleado, e.id_usuario, e.especialidad, e.telefono, e.horario_trabajo, "
@@ -48,6 +47,7 @@ public class EmpleadoRepository {
     public boolean guardar(Empleado empleado) {
         String sql = "INSERT INTO empleados (id_usuario, especialidad, telefono, horario_trabajo) VALUES (?, ?, ?, ?)";
 
+ 
         try (Connection conn = DataBaseConnection.getDataBaseConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -63,7 +63,6 @@ public class EmpleadoRepository {
         }
     }
 
-    // Actualizar datos de un empleado
     public boolean actualizar(Empleado empleado) {
         String sql = "UPDATE empleados SET especialidad = ?, telefono = ?, horario_trabajo = ? WHERE id_empleado = ?";
 
@@ -82,7 +81,6 @@ public class EmpleadoRepository {
         }
     }
 
-    // Eliminar un empleado por ID
     public boolean eliminar(int idEmpleado) {
         String sql = "DELETE FROM empleados WHERE id_empleado = ?";
 
@@ -97,7 +95,6 @@ public class EmpleadoRepository {
         }
     }
 
-    // Buscar empleado por ID
     public Empleado obtenerPorId(int idEmpleado) {
         String sql = "SELECT e.id_empleado, e.id_usuario, e.especialidad, e.telefono, e.horario_trabajo, "
                    + "u.nombre, u.apellido, u.correo, u.nombre_usuario "

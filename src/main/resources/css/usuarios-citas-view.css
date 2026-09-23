@@ -1,0 +1,137 @@
+/* ==========================================================================
+   PALETA DE COLORES - BEAUTY SPA (BASADO EN PSICOLOGÍA DEL COLOR)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   A) TONOS NEUTROS SUAVES (Fondos y Estructura)
+   Blanco Hueso (#FDFBF7) y Gris Perla (#F2F4F7) para limpieza y orden.
+   -------------------------------------------------------------------------- */
+.root {
+    -fx-background-color: #FDFBF7; /* Blanco Hueso: Fondo general relajante */
+}
+
+/* Paneles de fondo, tarjetas y contenedores de formularios */
+.background-principal {
+    -fx-background-color: #FDFBF7;
+}
+
+.panel-secundario {
+    -fx-background-color: #F2F4F7; /* Gris Perla: Separación estructural limpia */
+    -fx-background-radius: 10;
+}
+
+/* SplitPane transparente para no romper la armonía visual */
+.split-pane {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+.split-pane *.split-pane-divider {
+    -fx-background-color: #E2E8F0; /* Línea divisoria muy sutil */
+    -fx-padding: 1px;
+}
+
+/* --------------------------------------------------------------------------
+   B) TONOS PASTEL O ACENTOS CÁLIDOS (Rosa Cuarzo / Beige Suave)
+   Asociados a la comodidad, exclusividad, delicadeza y bienestar.
+   -------------------------------------------------------------------------- */
+/* Banner, encabezados o marcos sutiles */
+.decoracion-cuarzo {
+    -fx-background-color: #F7D6D8; /* Rosa Cuarzo: Suave y reconfortante */
+    -fx-background-radius: 5;
+}
+
+/* Títulos principales */
+.titulo-spa {
+    -fx-text-fill: #A36A71; /* Rosa Cuarzo Oscuro para legibilidad elegante */
+    -fx-font-family: "System";
+    -fx-font-weight: bold;
+    -fx-font-size: 24px;
+}
+
+/* Subtítulos y etiquetas secundarias */
+.label-formulario {
+    -fx-text-fill: #7E7C7A; /* Beige Grisáceo: Delicado, no cansa la vista */
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+/* Componentes de Entrada de Datos (TextField, DatePicker, ComboBox) */
+.text-field, .combo-box, .date-picker {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #EADCD9; /* Borde Beige Suave */
+    -fx-border-width: 1;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 6 10 6 10;
+    -fx-text-fill: #2C3E50;
+}
+
+/* Estado enfocado (Cuando el usuario da clic en el campo) */
+.text-field:focused, .combo-box:focused, .date-picker:focused {
+    -fx-border-color: #F7D6D8; /* Destello Rosa Cuarzo al enfocar */
+    -fx-border-width: 1.5;
+}
+
+/* --------------------------------------------------------------------------
+   C) TONOS DE CONTRASTE (Azul Profundo / Gris Grafito - Acción y Texto)
+   Transmiten formalidad, seguridad técnica y guían la vista de forma intuitiva.
+   -------------------------------------------------------------------------- */
+
+/* Botón de Acción Principal (Confirmar Citas, Guardar, Iniciar Sesión) */
+.button-principal {
+    -fx-background-color: #1B2A47; /* Azul Profundo: Formalidad y Confianza */
+    -fx-text-fill: #FFFFFF;        /* Texto blanco para máximo contraste */
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-background-radius: 5;
+    -fx-padding: 10 20 10 20;
+    -fx-cursor: hand;
+}
+
+/* Efecto Hover para el Botón Principal (Cuando pasas el mouse encima) */
+.button-principal:hover {
+    -fx-background-color: #2A3F63; /* Azul ligeramente más claro */
+}
+
+/* Botón Secundario o de Cancelación (Limpiar, Volver) */
+.button-secundario {
+    -fx-background-color: #4A4A4A; /* Gris Grafito: Neutralidad técnica */
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: normal;
+    -fx-font-size: 13px;
+    -fx-background-radius: 5;
+    -fx-padding: 8 16 8 16;
+    -fx-cursor: hand;
+}
+
+.button-secundario:hover {
+    -fx-background-color: #616161;
+}
+
+/* --------------------------------------------------------------------------
+   D) LISTAS Y CONTROLES ADICIONALES (ListView)
+   -------------------------------------------------------------------------- */
+.list-view {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 8;
+    -fx-border-color: #E2E8F0;
+    -fx-border-radius: 8;
+}
+
+/* Elementos dentro de la lista de citas */
+.list-cell {
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #2C3E50; /* Gris Grafito Oscuro para la tipografía */
+    -fx-padding: 10;
+    -fx-border-color: #FDFBF7;
+    -fx-border-width: 0 0 1 0; /* Línea sutil abajo de cada celda */
+}
+
+.list-cell:filled:selected {
+    -fx-background-color: #F7D6D8; /* Fondo Rosa Cuarzo al seleccionar la cita */
+    -fx-text-fill: #1B2A47;        /* Texto Azul Profundo */
+}
+
+.list-cell:filled:hover {
+    -fx-background-color: #FDF1F2; /* Brillo rosa muy tenue al pasar el mouse */
+}

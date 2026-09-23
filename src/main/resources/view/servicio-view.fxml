@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="850.0" styleClass="servicios-panel"
+            stylesheets="@../css/servicio-view.css"
+            xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="main.java.com.beauty.spa.salon.controller.ServicioController">
+   <children>
+      <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <VBox spacing="2.0">
+               <padding>
+                  <Insets bottom="8.0" left="30.0" right="30.0" top="24.0" />
+               </padding>
+               <children>
+                  <Label styleClass="title-label" text="SERVICIOS" />
+                  <Label styleClass="subtitle-label" text="Conoce lo que ofrecemos y sus precios" />
+               </children>
+            </VBox>
+         </top>
+         <center>
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="scroll-servicios" BorderPane.alignment="CENTER">
+               <content>
+                  <FlowPane fx:id="contenedorServicios" alignment="TOP_CENTER" hgap="20.0" vgap="20.0">
+                     <padding>
+                        <Insets bottom="30.0" left="30.0" right="30.0" top="12.0" />
+                     </padding>
+                  </FlowPane>
+               </content>
+            </ScrollPane>
+         </center>
+         <bottom>
+            <Label fx:id="lblEstado" styleClass="estado-label">
+               <padding>
+                  <Insets bottom="12.0" left="30.0" right="30.0" top="6.0" />
+               </padding>
+            </Label>
+         </bottom>
+      </BorderPane>
+   </children>
+</AnchorPane>

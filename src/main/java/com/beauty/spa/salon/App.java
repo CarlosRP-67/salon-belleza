@@ -1,25 +1,5 @@
 package main.java.com.beauty.spa.salon;
-<<<<<<< HEAD
 
-import main.java.com.beauty.spa.salon.controller.SceneNavigator;
-
-import javafx.application.Application;
-import javafx.stage.Stage;
-
-/**
- * Punto de entrada de la aplicación JavaFX del Salón de Belleza.
- * Carga el menú principal desde FXML.
- *
- * @author Carlitos
- */
-public class App extends Application {
-
-    @Override
-    public void start(Stage primaryStage) {
-        primaryStage.setTitle("Salón de Belleza");
-        SceneNavigator.cambiarA(primaryStage, "/main/resources/fxml/main_menu.fxml");
-        primaryStage.show();
-=======
 import javafx.application.Application;
 import javafx.concurrent.Task;
 import javafx.geometry.Pos;
@@ -92,7 +72,7 @@ public class App extends Application {
         Scene splashScene = new Scene(splashRoot, 850, 500);
         stage.setScene(splashScene);
         stage.setTitle("Beauty Spa - Cargando componentes...");
-        stage.setMinWidth(750); // Evita que rompan el diseño haciéndola muy chica
+        stage.setMinWidth(750);
         stage.setMinHeight(450);
         stage.centerOnScreen();
         stage.show();
@@ -116,14 +96,9 @@ public class App extends Application {
         });
 
         new Thread(tareaCarga).start();
->>>>>>> 2c0173fd990623de1dfa770a75ae84167881e15f
     }
 
     public static void main(String[] args) {
         launch(args);
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 2c0173fd990623de1dfa770a75ae84167881e15f

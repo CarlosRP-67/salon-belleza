@@ -1,10 +1,7 @@
-<<<<<<< HEAD
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-=======
->>>>>>> 2c0173fd990623de1dfa770a75ae84167881e15f
 package main.java.com.beauty.spa.salon.config;
 
 import java.sql.Connection;
@@ -12,25 +9,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
-<<<<<<< HEAD
- *
-=======
->>>>>>> 2c0173fd990623de1dfa770a75ae84167881e15f
  * @author Carlitos
  */
 public class DataBaseConnection {
     private static Connection conn;
-    
-<<<<<<< HEAD
-       public static Connection getConnection() throws SQLException {
-           if  (conn == null || conn.isClosed() ) {
-                  conn = DriverManager.getConnection(Credentials.URL_DB, Credentials.USER_DB, Credentials.PASS_DB) ;
-           }
-           return conn;
-       }
-=======
+
     public DataBaseConnection() {
-        
     }
     
     public static Connection getConnection() throws SQLException {
@@ -44,5 +28,4 @@ public class DataBaseConnection {
     public static Connection getDataBaseConnection() throws SQLException {
         return getConnection();
     }
->>>>>>> 2c0173fd990623de1dfa770a75ae84167881e15f
 }

@@ -71,7 +71,7 @@ public class App extends Application {
         Scene splashScene = new Scene(splashRoot, 850, 500);
         stage.setScene(splashScene);
         stage.setTitle("Beauty Spa - Cargando componentes...");
-        stage.setMinWidth(750);  // Evita que rompan el diseño haciéndola muy chica
+        stage.setMinWidth(750); // Evita que rompan el diseño haciéndola muy chica
         stage.setMinHeight(450);
         stage.centerOnScreen();
         stage.show();
@@ -87,7 +87,7 @@ public class App extends Application {
             }
         };
 
-       progressBar.progressProperty().bind(tareaCarga.progressProperty());
+        progressBar.progressProperty().bind(tareaCarga.progressProperty());
 
         tareaCarga.setOnSucceeded(workerStateEvent -> {
             SceneManager sceneManager = new SceneManager(stage);

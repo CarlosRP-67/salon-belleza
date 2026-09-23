@@ -1,27 +1,16 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package main.java.com.beauty.spa.salon.service;
 
 import main.java.com.beauty.spa.salon.model.Usuario;
 import main.java.com.beauty.spa.salon.repository.UsuarioRepository;
 import main.java.com.beauty.spa.salon.security.jbcrypt.BCrypt;
-/**
- *
- * @author informatica
- */
+import java.util.List;
+
 public class UsuarioService {
     
     private final UsuarioRepository usuarioRepository = new UsuarioRepository();
 
     public boolean registrarUsuario(String nombre, String apellido, String nombreUsuario, String correo, String contrasenaPlana, int idRol) {
-        
-        if (nombre == null || nombre.isEmpty() || 
-            apellido == null || apellido.isEmpty() || 
-            nombreUsuario == null || nombreUsuario.isEmpty() || 
-            correo == null || correo.isEmpty() || 
-            contrasenaPlana == null || contrasenaPlana.isEmpty()) {
+        if (camposInvalidos(nombre, apellido, nombreUsuario, correo, contrasenaPlana)) {
             return false;
         }
 
@@ -36,5 +25,40 @@ public class UsuarioService {
         usuario.setIdRol(idRol);
 
         return usuarioRepository.registrar(usuario);
+    }
+
+    public boolean actualizarUsuario(int idUsuario, String nombre, String apellido, String nombreUsuario, String correo, String contrasenaPlana, String contrasenaActualBD, int idRol) {
+        if (idUsuario <= 0 || camposInvalidos(nombre, apellido, nombreUsuario, correo, "validado")) {
+            return false;
+        }
+
+        String contrasenaFinal;
+        
+        // Si el usuario escribió una nueva contraseña, la encriptamos. Si la dejó vacía, conservamos la actual en BD.
+        if (contrasenaPlana != null && !contrasenaPlana.trim().isEmpty()) {
+            contrasenaFinal = BCrypt.hashpw(contrasenaPlana, BCrypt.gensalt());
+        } else {
+            contrasenaFinal = contrasenaActualBD;
+        }
+
+        Usuario usuario = new Usuario(idUsuario, nombre, apellido, nombreUsuario, correo, contrasenaFinal, idRol);
+        return usuarioRepository.actualizar(usuario);
+    }
+
+    public boolean eliminarUsuario(int idUsuario) {
+        if (idUsuario <= 0) return false;
+        return usuarioRepository.eliminar(idUsuario);
+    }
+
+    public List<Usuario> obtenerTodosLosUsuarios() {
+        return usuarioRepository.listarTodos();
+    }
+
+    private boolean camposInvalidos(String nombre, String apellido, String nombreUsuario, String correo, String contrasena) {
+        return nombre == null || nombre.trim().isEmpty() ||
+               apellido == null || apellido.trim().isEmpty() ||
+               nombreUsuario == null || nombreUsuario.trim().isEmpty() ||
+               correo == null || correo.trim().isEmpty() ||
+               contrasena == null || contrasena.trim().isEmpty();
     }
 }

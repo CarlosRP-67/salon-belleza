@@ -1,6 +1,6 @@
 package main.java.com.beauty.spa.salon.repository;
 
-
+import main.java.com.beauty.spa.salon.config.DataBaseConnection;
 import main.java.com.beauty.spa.salon.model.Empleado;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import main.java.com.beauty.spa.salon.config.DataBaseConnection;
 
 public class EmpleadoRepository {
 
@@ -19,7 +18,7 @@ public class EmpleadoRepository {
                    + "FROM empleados e "
                    + "INNER JOIN usuarios u ON e.id_usuario = u.id_usuario";
 
-        try (Connection conn = DataBaseConnection.getDataBaseConnection();
+        try (Connection conn = DataBaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
@@ -47,8 +46,7 @@ public class EmpleadoRepository {
     public boolean guardar(Empleado empleado) {
         String sql = "INSERT INTO empleados (id_usuario, especialidad, telefono, horario_trabajo) VALUES (?, ?, ?, ?)";
 
- 
-        try (Connection conn = DataBaseConnection.getDataBaseConnection();
+        try (Connection conn = DataBaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, empleado.getIdUsuario());
@@ -66,7 +64,7 @@ public class EmpleadoRepository {
     public boolean actualizar(Empleado empleado) {
         String sql = "UPDATE empleados SET especialidad = ?, telefono = ?, horario_trabajo = ? WHERE id_empleado = ?";
 
-        try (Connection conn = DataBaseConnection.getDataBaseConnection();
+        try (Connection conn = DataBaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, empleado.getEspecialidad());
@@ -84,7 +82,7 @@ public class EmpleadoRepository {
     public boolean eliminar(int idEmpleado) {
         String sql = "DELETE FROM empleados WHERE id_empleado = ?";
 
-        try (Connection conn = DataBaseConnection.getDataBaseConnection();
+        try (Connection conn = DataBaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, idEmpleado);
@@ -102,7 +100,7 @@ public class EmpleadoRepository {
                    + "INNER JOIN usuarios u ON e.id_usuario = u.id_usuario "
                    + "WHERE e.id_empleado = ?";
 
-        try (Connection conn = DataBaseConnection.getDataBaseConnection();
+        try (Connection conn = DataBaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, idEmpleado);

@@ -1,0 +1,39 @@
+.root {
+    -fx-background-color: #f4f4f9;
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+/* Título principal */
+.label {
+    -fx-text-fill: #333333;
+    -fx-font-size: 14px;
+}
+
+/* Selector de productos */
+.combo-box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 4px;
+    -fx-pref-width: 250px;
+}
+
+/* Spinner de cantidad */
+.spinner {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 4px;
+}
+
+/* Botones principales */
+.button {
+    -fx-background-color: #2c3e50;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-padding: 8px 16px;
+    -fx-background-radius: 4px;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #34495e;
+}

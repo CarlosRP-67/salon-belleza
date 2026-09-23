@@ -1,0 +1,90 @@
+/* ==========================================================================
+   Diseño Moderno y Responsivo - Beauty Spa
+   ========================================================================== */
+
+.form-panel {
+    -fx-background-color: #fcfbfa;
+}
+
+.image-panel {
+    -fx-background-color: #2b1f1a;
+}
+
+.image-overlay {
+    -fx-background-color: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.15) 50%, transparent 100%);
+    -fx-padding: 25px;
+}
+
+.overlay-title {
+    -fx-text-fill: #ffffff;
+    -fx-font-family: "System Bold";
+    -fx-font-size: 20px;
+}
+
+.overlay-subtitle {
+    -fx-text-fill: #e0dcd9;
+    -fx-font-size: 11px;
+    -fx-wrap-text: true;
+}
+
+.title-label {
+    -fx-text-fill: #6d4c41;
+    -fx-font-family: "System Bold";
+    -fx-font-size: 24px;
+}
+
+.subtitle-label {
+    -fx-text-fill: #8d6e63;
+    -fx-font-size: 12px;
+    -fx-padding: 0 0 8px 0;
+}
+
+.field-label {
+    -fx-text-fill: #5d4037;
+    -fx-font-weight: bold;
+    -fx-font-size: 11px;
+}
+
+.text-field, .password-field {
+    -fx-background-color: #f4f1ea;
+    -fx-background-radius: 8px;
+    -fx-border-color: #d7ccc8;
+    -fx-border-radius: 8px;
+    -fx-border-width: 1px;
+    -fx-padding: 8px 12px;
+    -fx-font-size: 13px;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #8d6e63;
+    -fx-background-color: #ffffff;
+}
+
+.btn-primary {
+    -fx-background-color: #880e4f;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-background-radius: 8px;
+    -fx-cursor: hand;
+}
+
+.btn-primary:hover {
+    -fx-background-color: #ad1457;
+}
+
+.btn-secondary {
+    -fx-background-color: transparent;
+    -fx-text-fill: #6d4c41;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-cursor: hand;
+    -fx-border-color: #d7ccc8;
+    -fx-border-radius: 8px;
+    -fx-border-width: 1px;
+}
+
+.btn-secondary:hover {
+    -fx-background-color: #efebe9;
+    -fx-text-fill: #4e342e;
+}

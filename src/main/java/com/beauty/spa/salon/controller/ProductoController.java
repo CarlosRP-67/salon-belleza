@@ -1,24 +1,26 @@
 package main.java.com.beauty.spa.salon.controller;
 
-import main.java.com.beauty.spa.salon.model.Producto;
-import main.java.com.beauty.spa.salon.service.ProductoService;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.StringConverter;
+import main.java.com.beauty.spa.salon.model.Producto;
+import main.java.com.beauty.spa.salon.model.Productos;
+import main.java.com.beauty.spa.salon.repository.ProductoRepository;
+import main.java.com.beauty.spa.salon.service.ProductoService;
+import main.java.com.beauty.spa.salon.util.SceneManager;
+
+import java.net.URL;
+import java.util.ResourceBundle;
 
 public class ProductoController implements Initializable {
+
 
     @FXML private TableView<Producto> tblProductos;
     @FXML private TableColumn<Producto, Integer> colIdProducto;
@@ -38,21 +40,49 @@ public class ProductoController implements Initializable {
     @FXML private Button btnEliminar;
     @FXML private Button btnLimpiar;
 
+
+    @FXML private ComboBox<Productos> cmbProductos;
+    @FXML private Label lblDescripcion;
+    @FXML private Label lblPrecioUnitario;
+    @FXML private Spinner<Integer> spCantidad;
+    @FXML private Label lblTotal;
+
+   
     private final ProductoService productoService = new ProductoService();
-    private ObservableList<Producto> listaProductos;
+    private final ProductoRepository productoRepository = new ProductoRepository();
+    
+    private ObservableList<Producto> listaProductosCrud;
+    private final ObservableList<Productos> listaProductosDisponibles = FXCollections.observableArrayList();
     private FilteredList<Producto> filteredData;
     private Producto productoSeleccionado;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        configurarColumnas();
-        cargarDatos();
+        
+        if (tblProductos != null) {
+            configurarColumnas();
+            cargarDatosCrud();
+            tblProductos.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> seleccionarElementoCrud(newValue)
+            );
+        }
 
-        tblProductos.getSelectionModel().selectedItemProperty().addListener(
-            (observable, oldValue, newValue) -> seleccionarElemento(newValue)
-        );
+       
+        if (cmbProductos != null) {
+            configurarComboBoxProductos();
+            if (spCantidad != null) {
+                SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, 1);
+                spCantidad.setValueFactory(valueFactory);
+                spCantidad.valueProperty().addListener((obs, oldVal, newVal) -> recalcularTotalCompra());
+            }
+            cargarProductosDisponibles();
+            cmbProductos.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+                actualizarDetallesProducto(newVal);
+            });
+        }
     }
 
+    // --- MÉTODOS CRUD ---
     private void configurarColumnas() {
         colIdProducto.setCellValueFactory(new PropertyValueFactory<>("idProducto"));
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
@@ -61,13 +91,13 @@ public class ProductoController implements Initializable {
         colStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
     }
 
-    public void cargarDatos() {
-        listaProductos = FXCollections.observableArrayList(productoService.obtenerTodosLosProductos());
-        configurarBuscador();
+    public void cargarDatosCrud() {
+        listaProductosCrud = FXCollections.observableArrayList(productoService.obtenerTodosLosProductos());
+        configurarBuscadorCrud();
     }
 
-    private void configurarBuscador() {
-        filteredData = new FilteredList<>(listaProductos, p -> true);
+    private void configurarBuscadorCrud() {
+        filteredData = new FilteredList<>(listaProductosCrud, p -> true);
 
         if (txtBuscar != null) {
             txtBuscar.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -75,15 +105,10 @@ public class ProductoController implements Initializable {
                     if (newValue == null || newValue.isEmpty()) {
                         return true;
                     }
-
                     String lowerCaseFilter = newValue.toLowerCase();
-
                     if (prod.getNombre() != null && prod.getNombre().toLowerCase().contains(lowerCaseFilter)) {
                         return true;
-                    } else if (prod.getDescripcion() != null && prod.getDescripcion().toLowerCase().contains(lowerCaseFilter)) {
-                        return true;
-                    }
-                    return false;
+                    } else return prod.getDescripcion() != null && prod.getDescripcion().toLowerCase().contains(lowerCaseFilter);
                 });
             });
         }
@@ -95,23 +120,19 @@ public class ProductoController implements Initializable {
 
     @FXML
     public void guardarProducto() {
-        if (!validarCampos()) return;
-
+        if (!validarCamposCrud()) return;
         try {
             double precio = Double.parseDouble(txtPrecio.getText());
             int stock = Integer.parseInt(txtStock.getText());
 
             boolean guardado = productoService.registrarProducto(
-                txtNombre.getText(),
-                txtDescripcion.getText(),
-                precio,
-                stock
+                txtNombre.getText(), txtDescripcion.getText(), precio, stock
             );
 
             if (guardado) {
                 mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito", "Producto registrado correctamente.");
-                limpiarCampos();
-                cargarDatos();
+                limpiarCamposCrud();
+                cargarDatosCrud();
             } else {
                 mostrarAlerta(Alert.AlertType.ERROR, "Error", "No se pudo registrar el producto.");
             }
@@ -126,25 +147,20 @@ public class ProductoController implements Initializable {
             mostrarAlerta(Alert.AlertType.WARNING, "Advertencia", "Selecciona un producto de la tabla para actualizar.");
             return;
         }
-
-        if (!validarCampos()) return;
+        if (!validarCamposCrud()) return;
 
         try {
             double precio = Double.parseDouble(txtPrecio.getText());
             int stock = Integer.parseInt(txtStock.getText());
 
             boolean actualizado = productoService.actualizarProducto(
-                productoSeleccionado.getIdProducto(),
-                txtNombre.getText(),
-                txtDescripcion.getText(),
-                precio,
-                stock
+                productoSeleccionado.getIdProducto(), txtNombre.getText(), txtDescripcion.getText(), precio, stock
             );
 
             if (actualizado) {
                 mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito", "Producto actualizado correctamente.");
-                limpiarCampos();
-                cargarDatos();
+                limpiarCamposCrud();
+                cargarDatosCrud();
             } else {
                 mostrarAlerta(Alert.AlertType.ERROR, "Error", "No se pudo actualizar el producto.");
             }
@@ -162,35 +178,36 @@ public class ProductoController implements Initializable {
 
         if (productoService.eliminarProducto(productoSeleccionado.getIdProducto())) {
             mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito", "Producto eliminado correctamente.");
-            limpiarCampos();
-            cargarDatos();
+            limpiarCamposCrud();
+            cargarDatosCrud();
         } else {
             mostrarAlerta(Alert.AlertType.ERROR, "Error", "No se pudo eliminar el producto.");
         }
     }
 
     @FXML
-    public void limpiarCampos() {
-        txtNombre.clear();
-        txtDescripcion.clear();
-        txtPrecio.clear();
-        txtStock.clear();
+    public void limpiarCamposCrud() {
+        if (txtNombre != null) txtNombre.clear();
+        if (txtDescripcion != null) txtDescripcion.clear();
+        if (txtPrecio != null) txtPrecio.clear();
+        if (txtStock != null) txtStock.clear();
         if (txtBuscar != null) txtBuscar.clear();
-        tblProductos.getSelectionModel().clearSelection();
+        if (tblProductos != null) tblProductos.getSelectionModel().clearSelection();
         productoSeleccionado = null;
     }
 
-    private void seleccionarElemento(Producto producto) {
+    private void seleccionarElementoCrud(Producto producto) {
         if (producto != null) {
             productoSeleccionado = producto;
-            txtNombre.setText(producto.getNombre());
-            txtDescripcion.setText(producto.getDescripcion());
-            txtPrecio.setText(String.valueOf(producto.getPrecio()));
-            txtStock.setText(String.valueOf(producto.getStock()));
+            if (txtNombre != null) txtNombre.setText(producto.getNombre());
+            if (txtDescripcion != null) txtDescripcion.setText(producto.getDescripcion());
+            if (txtPrecio != null) txtPrecio.setText(String.valueOf(producto.getPrecio()));
+            if (txtStock != null) txtStock.setText(String.valueOf(producto.getStock()));
         }
     }
 
-    private boolean validarCampos() {
+    private boolean validarCamposCrud() {
+        if (txtNombre == null || txtPrecio == null || txtStock == null) return true;
         if (txtNombre.getText().isEmpty() || txtPrecio.getText().isEmpty() || txtStock.getText().isEmpty()) {
             mostrarAlerta(Alert.AlertType.WARNING, "Campos vacíos", "Por favor completa Nombre, Precio y Stock.");
             return false;
@@ -198,6 +215,101 @@ public class ProductoController implements Initializable {
         return true;
     }
 
+    // --- MÉTODOS COMPRA / CATÁLOGO ---
+    private void configurarComboBoxProductos() {
+        StringConverter<Productos> converter = new StringConverter<>() {
+            @Override
+            public String toString(Productos producto) {
+                return (producto != null) ? producto.getNombreProducto() : "";
+            }
+            @Override
+            public Productos fromString(String string) {
+                return null;
+            }
+        };
+        cmbProductos.setConverter(converter);
+        cmbProductos.setCellFactory(cell -> new ListCell<Productos>() {
+            @Override
+            protected void updateItem(Productos item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.getNombreProducto());
+                }
+            }
+        });
+    }
+
+    private void cargarProductosDisponibles() {
+        listaProductosDisponibles.clear();
+        listaProductosDisponibles.addAll(productoRepository.obtenerProductosDisponibles());
+        if (cmbProductos != null) {
+            cmbProductos.setItems(listaProductosDisponibles);
+        }
+    }
+
+    private void actualizarDetallesProducto(Productos prod) {
+        if (prod != null) {
+            if (lblDescripcion != null) lblDescripcion.setText(prod.getDescripcion());
+            if (lblPrecioUnitario != null) lblPrecioUnitario.setText(String.format("Q%.2f", prod.getPrecio()));
+            recalcularTotalCompra();
+        } else {
+            if (lblDescripcion != null) lblDescripcion.setText("-");
+            if (lblPrecioUnitario != null) lblPrecioUnitario.setText("Q0.00");
+            if (lblTotal != null) lblTotal.setText("Q0.00");
+        }
+    }
+
+    private void recalcularTotalCompra() {
+        if (cmbProductos == null || spCantidad == null || lblTotal == null) return;
+        Productos prod = cmbProductos.getValue();
+        if (prod != null && spCantidad.getValue() != null) {
+            double total = prod.getPrecio() * spCantidad.getValue();
+            lblTotal.setText(String.format("Q%.2f", total));
+        }
+    }
+
+    @FXML
+    private void handleComprarAction(ActionEvent event) {
+        if (cmbProductos == null || spCantidad == null) return;
+        Productos prod = cmbProductos.getValue();
+        if (prod == null) {
+            mostrarAlerta(Alert.AlertType.WARNING, "Atención", "Seleccione un producto para comprar.");
+            return;
+        }
+
+        int cantidad = spCantidad.getValue();
+        if (cantidad > prod.getStock()) {
+            mostrarAlerta(Alert.AlertType.ERROR, "Stock Insuficiente", "Solo quedan " + prod.getStock() + " unidades disponibles.");
+            return;
+        }
+
+        double total = prod.getPrecio() * cantidad;
+        int idClienteActual = SceneManager.getIdClienteActual();
+
+        boolean exito = productoRepository.realizarCompra(idClienteActual, prod.getIdProducto(), cantidad, total);
+
+        if (exito) {
+            mostrarAlerta(Alert.AlertType.INFORMATION, "Compra Exitosa", 
+                String.format("¡Compra realizada con éxito!\nProducto: %s\nCantidad: %d\nTotal: Q%.2f", 
+                prod.getNombreProducto(), cantidad, total));
+            cargarProductosDisponibles();
+            limpiarFormularioCompra();
+        } else {
+            mostrarAlerta(Alert.AlertType.ERROR, "Error de Transacción", "No se pudo procesar la compra en la base de datos.");
+        }
+    }
+
+    private void limpiarFormularioCompra() {
+        if (cmbProductos != null) cmbProductos.setValue(null);
+        if (lblDescripcion != null) lblDescripcion.setText("-");
+        if (lblPrecioUnitario != null) lblPrecioUnitario.setText("Q0.00");
+        if (lblTotal != null) lblTotal.setText("Q0.00");
+        if (spCantidad != null && spCantidad.getValueFactory() != null) spCantidad.getValueFactory().setValue(1);
+    }
+
+    // --- UTILIDAD GENERAL ---
     private void mostrarAlerta(Alert.AlertType tipo, String titulo, String mensaje) {
         Alert alerta = new Alert(tipo);
         alerta.setTitle(titulo);

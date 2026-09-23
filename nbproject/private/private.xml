@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/Users/Informatica/Documents/repositorio%20local/salon-belleza/src/main/java/com/beauty/spa/salon/App.java</file>
+            <file>file:/C:/Users/Informatica/Documents/repositorio%20local/salon-belleza/src/main/java/com/beauty/spa/salon/config/Credentials.java</file>
+            <file>file:/C:/Users/Informatica/Documents/repositorio%20local/salon-belleza/src/main/java/com/beauty/spa/salon/config/DataBaseConnection.java</file>
+            <file>file:/C:/Users/Informatica/Documents/repositorio%20local/salon-belleza/src/main/java/com/beauty/spa/salon/controller/LoginController.java</file>
+            <file>file:/C:/Users/Informatica/Documents/repositorio%20local/salon-belleza/src/main/java/com/beauty/spa/salon/controller/RegistroController.java</file>
+            <file>file:/C:/Users/Informatica/Documents/repositorio%20local/salon-belleza/src/main/java/com/beauty/spa/salon/dto/request/LoginDTORequest.java</file>
+            <file>file:/C:/Users/Informatica/Documents/repositorio%20local/salon-belleza/src/main/java/com/beauty/spa/salon/dto/response/LoginDTOResponse.java</file>
+            <file>file:/C:/Users/Informatica/Documents/repositorio%20local/salon-belleza/src/main/java/com/beauty/spa/salon/model/Usuario.java</file>
+            <file>file:/C:/Users/Informatica/Documents/repositorio%20local/salon-belleza/src/main/java/com/beauty/spa/salon/repository/AuthRepository.java</file>
+            <file>file:/C:/Users/Informatica/Documents/repositorio%20local/salon-belleza/src/main/java/com/beauty/spa/salon/repository/UsuarioRepository.java</file>
+            <file>file:/C:/Users/Informatica/Documents/repositorio%20local/salon-belleza/src/main/java/com/beauty/spa/salon/service/AuthService.java</file>
+            <file>file:/C:/Users/Informatica/Documents/repositorio%20local/salon-belleza/src/main/java/com/beauty/spa/salon/service/UsuarioService.java</file>
+            <file>file:/C:/Users/Informatica/Documents/repositorio%20local/salon-belleza/src/main/java/com/beauty/spa/salon/util/SceneManager.java</file>
+            <file>file:/C:/Users/Informatica/Documents/repositorio%20local/salon-belleza/src/main/resources/css/login-view.css</file>
+            <file>file:/C:/Users/Informatica/Documents/repositorio%20local/salon-belleza/src/main/resources/css/registro-styles.css</file>
+            <file>file:/C:/Users/Informatica/Documents/repositorio%20local/salon-belleza/src/main/resources/images/beauty-logo.png</file>
+            <file>file:/C:/Users/Informatica/Documents/repositorio%20local/salon-belleza/src/main/resources/images/spa-instalaciones.jpg</file>
+            <file>file:/C:/Users/Informatica/Documents/repositorio%20local/salon-belleza/src/main/resources/view/login-view.fxml</file>
+            <file>file:/C:/Users/Informatica/Documents/repositorio%20local/salon-belleza/src/main/resources/view/registro-view.fxml</file>
+        </group>
+    </open-files>
+</project-private>

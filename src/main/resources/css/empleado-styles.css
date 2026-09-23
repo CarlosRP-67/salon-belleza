@@ -1,0 +1,126 @@
+
+.root {
+    -fx-background-color: #F4F6F8;
+    -fx-font-family: 'Segoe UI', sans-serif;
+}
+
+.titulo-pantalla {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2B2D42;
+}
+
+.label {
+    -fx-text-fill: #2B2D42;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+/* Campos de Entrada */
+.text-field {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #D1D5DB;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-padding: 7px;
+}
+
+.text-field:focused {
+    -fx-border-color: #C59B27;
+    -fx-border-width: 2px;
+}
+
+/* Botones Principales - Dorado Champagne (Punto B) */
+.btn-primario {
+    -fx-background-color: #C59B27;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+    -fx-background-radius: 4px;
+    -fx-padding: 7px 12px;
+    -fx-cursor: hand;
+}
+
+.btn-primario:hover {
+    -fx-background-color: #A8831F;
+}
+
+/* Botones Secundarios - Gris Grafito Profundo (Punto C) */
+.btn-secundario {
+    -fx-background-color: #2B2D42;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+    -fx-background-radius: 4px;
+    -fx-padding: 7px 12px;
+    -fx-cursor: hand;
+}
+
+.btn-secundario:hover {
+    -fx-background-color: #1E202E;
+}
+
+/* Tabla de Datos y Encabezados */
+.table-view {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #D1D5DB;
+    -fx-border-radius: 4px;
+}
+
+.table-view .column-header-background,
+.table-view .column-header {
+    -fx-background-color: #2B2D42;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+}
+
+/* Resaltado de fila seleccionada en dorado */
+.table-row-cell:filled:selected {
+    -fx-background-color: #C59B27;
+}
+
+.table-row-cell:filled:selected .text {
+    -fx-fill: #FFFFFF;
+}
+
+.combo-box {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #D1D5DB;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+
+.combo-box:focused {
+    -fx-border-color: #C59B27;
+    -fx-border-width: 2px;
+}
+
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: #F8F9FA;
+}
+
+.tab {
+    -fx-background-color: #2B2D42;
+    -fx-background-radius: 6px 6px 0 0;
+    -fx-pref-height: 35px;
+    -fx-padding: 0 20 0 20;
+}
+
+.tab .tab-label {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+}
+
+.tab:selected {
+    -fx-background-color: #C59B27;
+}
+
+.tab:selected .tab-label {
+    -fx-text-fill: #FFFFFF;
+}
+
+.tab:hover {
+    -fx-cursor: hand;
+}

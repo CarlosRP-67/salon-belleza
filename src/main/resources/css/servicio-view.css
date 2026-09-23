@@ -1,0 +1,76 @@
+/* ==========================================================================
+   Vista de Servicios - Beauty Spa
+   ========================================================================== */
+
+.servicios-panel {
+    -fx-background-color: #f4f1ea;
+}
+
+.title-label {
+    -fx-text-fill: #6d4c41;
+    -fx-font-family: "System Bold";
+    -fx-font-size: 24px;
+}
+
+.subtitle-label {
+    -fx-text-fill: #8d6e63;
+    -fx-font-size: 12px;
+    -fx-padding: 0 0 8px 0;
+}
+
+.estado-label {
+    -fx-text-fill: #880e4f;
+    -fx-font-size: 12px;
+}
+
+.scroll-servicios,
+.scroll-servicios > .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-servicios {
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+/* Tarjeta de cada servicio */
+.tarjeta-servicio {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 12px;
+    -fx-border-color: #d7ccc8;
+    -fx-border-radius: 12px;
+    -fx-border-width: 1px;
+    -fx-padding: 16px;
+    -fx-effect: dropshadow(gaussian, rgba(93, 64, 55, 0.10), 10, 0, 0, 3);
+}
+
+.servicio-nombre {
+    -fx-text-fill: #5d4037;
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+}
+
+.servicio-descripcion {
+    -fx-text-fill: #8d6e63;
+    -fx-font-size: 12px;
+}
+
+.fila-precio {
+    -fx-padding: 10px 0 0 0;
+    -fx-border-color: #efebe9 transparent transparent transparent;
+    -fx-border-width: 1px 0 0 0;
+}
+
+.servicio-precio {
+    -fx-text-fill: #880e4f;
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+}
+
+.badge-duracion {
+    -fx-background-color: #efebe9;
+    -fx-text-fill: #6d4c41;
+    -fx-background-radius: 8px;
+    -fx-padding: 3px 10px;
+    -fx-font-size: 11px;
+}

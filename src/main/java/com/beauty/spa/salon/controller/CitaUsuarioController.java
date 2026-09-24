@@ -41,6 +41,12 @@ public class CitaUsuarioController {
     private void cargarCitasDesdeBD() {
         listaCitasVisual.clear();
         int idCliente = SceneManager.getIdClienteActual();
+        
+        // Si es admin o no hay cliente logueado, podemos mostrar un ID por defecto (ej. 1) o todas las citas
+        if (idCliente <= 0) {
+            idCliente = 1; // ID de cliente genérico para administradores
+        }
+        
         listaCitasVisual.addAll(citasRepository.obtenerCitasPorCliente(idCliente));
     }
 
@@ -56,6 +62,15 @@ public class CitaUsuarioController {
             return;
         }
 
+        // Obtenemos el ID del cliente actual
+        int idCliente = SceneManager.getIdClienteActual();
+        
+        // CORRECCIÓN: Si es un administrador (u otro rol sin ID de cliente), 
+        // asignamos por defecto el ID 1 (asegúrate de tener un cliente con id_cliente = 1 en tu BD)
+        if (idCliente <= 0) {
+            idCliente = 1; 
+        }
+
         int idServicio = 1; 
         if ("Manicura".equals(servicioSeleccionado)) idServicio = 2;
         if ("Pedicura".equals(servicioSeleccionado)) idServicio = 3;
@@ -64,7 +79,6 @@ public class CitaUsuarioController {
         LocalTime tiempo = LocalTime.of(Integer.parseInt(hora), Integer.parseInt(minuto));
         LocalDateTime fechaHoraCita = LocalDateTime.of(fecha, tiempo);
 
-        int idCliente = SceneManager.getIdClienteActual();
         CitaUsuario nuevaCita = new CitaUsuario(0, idCliente, ID_EMPLEADO_ACTUAL, idServicio, fechaHoraCita, "Pendiente");
 
         if (citasRepository.guardarCita(nuevaCita)) {

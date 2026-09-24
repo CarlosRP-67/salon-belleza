@@ -8,13 +8,16 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="850.0" styleClass="servicios-panel"
-            stylesheets="@../css/servicio-view.css"
-            xmlns="http://javafx.com/javafx/21"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="main.java.com.beauty.spa.salon.controller.ServicioController">
+<AnchorPane xmlns="http://javafx.com/javafx/21" 
+            xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="main.java.com.beauty.spa.salon.controller.ServicioController"
+            styleClass="servicios-panel" 
+            stylesheets="@../css/servicio-view.css">
    <children>
-      <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <BorderPane AnchorPane.bottomAnchor="0.0" 
+                    AnchorPane.leftAnchor="0.0" 
+                    AnchorPane.rightAnchor="0.0" 
+                    AnchorPane.topAnchor="0.0">
          <top>
             <VBox spacing="2.0">
                <padding>

@@ -21,7 +21,6 @@ import java.util.ResourceBundle;
 
 public class ProductoController implements Initializable {
 
-
     @FXML private TableView<ProductoEmpleado> tblProductos;
     @FXML private TableColumn<ProductoEmpleado, Integer> colIdProducto;
     @FXML private TableColumn<ProductoEmpleado, String> colNombre;
@@ -40,14 +39,12 @@ public class ProductoController implements Initializable {
     @FXML private Button btnEliminar;
     @FXML private Button btnLimpiar;
 
-
     @FXML private ComboBox<ProductoUsuario> cmbProductos;
     @FXML private Label lblDescripcion;
     @FXML private Label lblPrecioUnitario;
     @FXML private Spinner<Integer> spCantidad;
     @FXML private Label lblTotal;
 
-   
     private final ProductoService productoService = new ProductoService();
     private final ProductoRepository productoRepository = new ProductoRepository();
     
@@ -58,7 +55,6 @@ public class ProductoController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
         if (tblProductos != null) {
             configurarColumnas();
             cargarDatosCrud();
@@ -67,7 +63,6 @@ public class ProductoController implements Initializable {
             );
         }
 
-       
         if (cmbProductos != null) {
             configurarComboBoxProductos();
             if (spCantidad != null) {
@@ -84,11 +79,11 @@ public class ProductoController implements Initializable {
 
     // --- MÉTODOS CRUD ---
     private void configurarColumnas() {
-        colIdProducto.setCellValueFactory(new PropertyValueFactory<>("idProducto"));
-        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        colDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
-        colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
-        colStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        if (colIdProducto != null) colIdProducto.setCellValueFactory(new PropertyValueFactory<>("idProducto"));
+        if (colNombre != null) colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        if (colDescripcion != null) colDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
+        if (colPrecio != null) colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
+        if (colStock != null) colStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
     }
 
     public void cargarDatosCrud() {
@@ -113,13 +108,15 @@ public class ProductoController implements Initializable {
             });
         }
 
-        SortedList<ProductoEmpleado> sortedData = new SortedList<>(filteredData);
-        sortedData.comparatorProperty().bind(tblProductos.comparatorProperty());
-        tblProductos.setItems(sortedData);
+        if (tblProductos != null) {
+            SortedList<ProductoEmpleado> sortedData = new SortedList<>(filteredData);
+            sortedData.comparatorProperty().bind(tblProductos.comparatorProperty());
+            tblProductos.setItems(sortedData);
+        }
     }
 
     @FXML
-    public void guardarProducto() {
+    public void guardarProducto(ActionEvent event) {
         if (!validarCamposCrud()) return;
         try {
             double precio = Double.parseDouble(txtPrecio.getText());
@@ -142,7 +139,7 @@ public class ProductoController implements Initializable {
     }
 
     @FXML
-    public void actualizarProducto() {
+    public void actualizarProducto(ActionEvent event) {
         if (productoSeleccionado == null) {
             mostrarAlerta(Alert.AlertType.WARNING, "Advertencia", "Selecciona un producto de la tabla para actualizar.");
             return;
@@ -170,7 +167,7 @@ public class ProductoController implements Initializable {
     }
 
     @FXML
-    public void eliminarProducto() {
+    public void eliminarProducto(ActionEvent event) {
         if (productoSeleccionado == null) {
             mostrarAlerta(Alert.AlertType.WARNING, "Advertencia", "Selecciona un producto de la tabla para eliminar.");
             return;
@@ -185,7 +182,14 @@ public class ProductoController implements Initializable {
         }
     }
 
+    /**
+     * Método requerido por el FXML de productos para el botón Limpiar.
+     */
     @FXML
+    public void limpiarCampos(ActionEvent event) {
+        limpiarCamposCrud();
+    }
+
     public void limpiarCamposCrud() {
         if (txtNombre != null) txtNombre.clear();
         if (txtDescripcion != null) txtDescripcion.clear();
@@ -297,7 +301,8 @@ public class ProductoController implements Initializable {
             cargarProductosDisponibles();
             limpiarFormularioCompra();
         } else {
-            mostrarAlerta(Alert.AlertType.ERROR, "Error de Transacción", "No se pudo procesar la compra en la base de datos.");
+            // Mensaje modificado para que no mencione la base de datos
+            mostrarAlerta(Alert.AlertType.ERROR, "Error en la compra", "No se pudo completar la compra.");
         }
     }
 

@@ -119,25 +119,53 @@ public class ProductoRepository {
     }
 
     public boolean realizarCompra(int idCliente, int idProducto, int cantidad, double total) {
-        String sqlVenta = "INSERT INTO ventas (id_cliente, id_producto, cantidad, total, fecha_venta) VALUES (?, ?, ?, ?, NOW())";
+        // Si el idCliente es 0 o negativo (porque no hay sesión iniciada), 
+        // asignamos por defecto el ID 1 para que cualquier usuario pueda comprar sin restricciones.
+        if (idCliente <= 0) {
+            idCliente = 1; 
+        }
+
+        System.out.println("DEBUG - Realizando compra con idCliente: " + idCliente + ", idProducto: " + idProducto);
+
+        String sqlFactura = "INSERT INTO facturas (id_cliente, fecha_factura, total) VALUES (?, NOW(), ?)";
+        String sqlDetalle = "INSERT INTO detalles_facturas (id_factura, id_producto, cantidad, precio_unitario) VALUES (?, ?, ?, ?)";
         String sqlUpdateStock = "UPDATE productos SET stock = stock - ? WHERE id_producto = ?";
 
         try (Connection conn = DataBaseConnection.getConnection()) {
             conn.setAutoCommit(false); 
 
-            try (PreparedStatement stmVenta = conn.prepareStatement(sqlVenta);
+            try (PreparedStatement stmFactura = conn.prepareStatement(sqlFactura, PreparedStatement.RETURN_GENERATED_KEYS);
+                 PreparedStatement stmDetalle = conn.prepareStatement(sqlDetalle);
                  PreparedStatement stmStock = conn.prepareStatement(sqlUpdateStock)) {
 
-                stmVenta.setInt(1, idCliente);
-                stmVenta.setInt(2, idProducto);
-                stmVenta.setInt(3, cantidad);
-                stmVenta.setDouble(4, total);
-                stmVenta.executeUpdate();
+                // 1. Insertar la cabecera de la factura
+                stmFactura.setInt(1, idCliente);
+                stmFactura.setDouble(2, total);
+                stmFactura.executeUpdate();
 
+                // Obtener el ID de la factura generada automáticamente
+                ResultSet generatedKeys = stmFactura.getGeneratedKeys();
+                int idFactura = -1;
+                if (generatedKeys.next()) {
+                    idFactura = generatedKeys.getInt(1);
+                } else {
+                    throw new SQLException("No se pudo obtener el ID de la factura generada.");
+                }
+
+                // 2. Insertar el detalle de la compra vinculado
+                double precioUnitario = total / cantidad;
+                stmDetalle.setInt(1, idFactura);
+                stmDetalle.setInt(2, idProducto);
+                stmDetalle.setInt(3, cantidad);
+                stmDetalle.setDouble(4, precioUnitario);
+                stmDetalle.executeUpdate();
+
+                // 3. Descontar el stock del producto
                 stmStock.setInt(1, cantidad);
                 stmStock.setInt(2, idProducto);
                 stmStock.executeUpdate();
 
+                // Confirmar transacción
                 conn.commit();
                 return true;
 

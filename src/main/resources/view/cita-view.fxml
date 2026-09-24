@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="650.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.com.beauty.spa.salon.controller.CitaController">
+<AnchorPane prefHeight="650.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.com.beauty.spa.salon.controller.CitaEmpleadoController">
     <children>
         <VBox spacing="10.0" style="-fx-padding: 15;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -51,9 +51,6 @@
                                     </children>
                                 </HBox>
                                 <TableView fx:id="tblCitas" VBox.vgrow="ALWAYS">
-                                    <columnResizePolicy>
-                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                    </columnResizePolicy>
                                     <columns>
                                         <TableColumn fx:id="colIdCita" prefWidth="60.0" text="ID Cita" />
                                         <TableColumn fx:id="colIdCliente" prefWidth="100.0" text="ID Cliente" />

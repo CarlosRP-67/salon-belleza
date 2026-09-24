@@ -1,20 +1,17 @@
 package main.java.com.beauty.spa.salon.controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import main.java.com.beauty.spa.salon.model.Empleado;
 import main.java.com.beauty.spa.salon.repository.EmpleadoRepository;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 
 public class EmpleadoController implements Initializable {
 
@@ -26,10 +23,11 @@ public class EmpleadoController implements Initializable {
     @FXML private TableColumn<Empleado, String> colTelefono;
     @FXML private TableColumn<Empleado, String> colHorario;
 
-    @FXML private TextField txtIdUsuario;
+    @FXML private ComboBox<String> cmbUsuario;
     @FXML private TextField txtEspecialidad;
     @FXML private TextField txtTelefono;
     @FXML private TextField txtHorario;
+    @FXML private TextField txtBuscar;
 
     @FXML private Button btnGuardar;
     @FXML private Button btnActualizar;
@@ -44,70 +42,90 @@ public class EmpleadoController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         configurarColumnas();
         cargarDatos();
+        
+        if (cmbUsuario != null) {
+            cmbUsuario.setItems(FXCollections.observableArrayList("1 - Administrador", "2 - Estilista", "3 - Recepcionista"));
+        }
 
-        tblEmpleados.getSelectionModel().selectedItemProperty().addListener(
-            (observable, oldValue, newValue) -> seleccionarElemento(newValue)
-        );
+        if (tblEmpleados != null) {
+            tblEmpleados.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> seleccionarElemento(newValue)
+            );
+        }
     }
 
     private void configurarColumnas() {
-        colIdEmpleado.setCellValueFactory(new PropertyValueFactory<>("idEmpleado"));
-        colIdUsuario.setCellValueFactory(new PropertyValueFactory<>("idUsuario"));
-        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombreCompleto"));
-        colEspecialidad.setCellValueFactory(new PropertyValueFactory<>("especialidad"));
-        colTelefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
-        colHorario.setCellValueFactory(new PropertyValueFactory<>("horarioTrabajo"));
+        if (colIdEmpleado != null) colIdEmpleado.setCellValueFactory(new PropertyValueFactory<>("idEmpleado"));
+        if (colIdUsuario != null) colIdUsuario.setCellValueFactory(new PropertyValueFactory<>("idUsuario"));
+        if (colNombre != null) colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        if (colEspecialidad != null) colEspecialidad.setCellValueFactory(new PropertyValueFactory<>("especialidad"));
+        if (colTelefono != null) colTelefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
+        if (colHorario != null) colHorario.setCellValueFactory(new PropertyValueFactory<>("horarioTrabajo"));
     }
 
     public void cargarDatos() {
         listaEmpleados = FXCollections.observableArrayList(empleadoRepository.listarTodos());
-        tblEmpleados.setItems(listaEmpleados);
+        if (tblEmpleados != null) {
+            tblEmpleados.setItems(listaEmpleados);
+        }
     }
 
     @FXML
-    public void guardarEmpleado() {
+    public void guardarEmpleado(ActionEvent event) {
         if (!validarCampos()) return;
 
         try {
-            int idUsuario = Integer.parseInt(txtIdUsuario.getText());
-            Empleado nuevo = new Empleado(idUsuario, txtEspecialidad.getText(), txtTelefono.getText(), txtHorario.getText());
+            String seleccion = cmbUsuario.getValue();
+            int idUsuario = Integer.parseInt(seleccion.split(" - ")[0]);
+
+            Empleado nuevo = new Empleado(
+                0, 
+                idUsuario, 
+                txtEspecialidad.getText(), 
+                txtTelefono.getText(), 
+                txtHorario.getText(), 
+                "", "", "", ""
+            );
 
             if (empleadoRepository.guardar(nuevo)) {
                 mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito", "Empleado registrado correctamente.");
-                limpiarCampos();
+                limpiarCampos(null);
                 cargarDatos();
             } else {
                 mostrarAlerta(Alert.AlertType.ERROR, "Error", "No se pudo registrar el empleado.");
             }
-        } catch (NumberFormatException e) {
-            mostrarAlerta(Alert.AlertType.WARNING, "Advertencia", "El ID de usuario debe ser un número entero.");
+        } catch (Exception e) {
+            mostrarAlerta(Alert.AlertType.WARNING, "Formato incorrecto", "Seleccione un usuario válido de la lista.");
         }
     }
 
     @FXML
-    public void actualizarEmpleado() {
+    public void actualizarEmpleado(ActionEvent event) {
         if (empleadoSeleccionado == null) {
             mostrarAlerta(Alert.AlertType.WARNING, "Advertencia", "Selecciona un empleado de la tabla para actualizar.");
             return;
         }
-
         if (!validarCampos()) return;
 
-        empleadoSeleccionado.setEspecialidad(txtEspecialidad.getText());
-        empleadoSeleccionado.setTelefono(txtTelefono.getText());
-        empleadoSeleccionado.setHorarioTrabajo(txtHorario.getText());
+        try {
+            empleadoSeleccionado.setEspecialidad(txtEspecialidad.getText());
+            empleadoSeleccionado.setTelefono(txtTelefono.getText());
+            empleadoSeleccionado.setHorarioTrabajo(txtHorario.getText());
 
-        if (empleadoRepository.actualizar(empleadoSeleccionado)) {
-            mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito", "Empleado actualizado correctamente.");
-            limpiarCampos();
-            cargarDatos();
-        } else {
-            mostrarAlerta(Alert.AlertType.ERROR, "Error", "No se pudo actualizar el empleado.");
+            if (empleadoRepository.actualizar(empleadoSeleccionado)) {
+                mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito", "Empleado actualizado correctamente.");
+                limpiarCampos(null);
+                cargarDatos();
+            } else {
+                mostrarAlerta(Alert.AlertType.ERROR, "Error", "No se pudo actualizar el empleado.");
+            }
+        } catch (Exception e) {
+            mostrarAlerta(Alert.AlertType.ERROR, "Error", "Ocurrió un error al actualizar.");
         }
     }
 
     @FXML
-    public void eliminarEmpleado() {
+    public void eliminarEmpleado(ActionEvent event) {
         if (empleadoSeleccionado == null) {
             mostrarAlerta(Alert.AlertType.WARNING, "Advertencia", "Selecciona un empleado de la tabla para eliminar.");
             return;
@@ -115,7 +133,7 @@ public class EmpleadoController implements Initializable {
 
         if (empleadoRepository.eliminar(empleadoSeleccionado.getIdEmpleado())) {
             mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito", "Empleado eliminado correctamente.");
-            limpiarCampos();
+            limpiarCampos(null);
             cargarDatos();
         } else {
             mostrarAlerta(Alert.AlertType.ERROR, "Error", "No se pudo eliminar el empleado.");
@@ -123,31 +141,38 @@ public class EmpleadoController implements Initializable {
     }
 
     @FXML
-    public void limpiarCampos() {
-        txtIdUsuario.clear();
-        txtEspecialidad.clear();
-        txtTelefono.clear();
-        txtHorario.clear();
-        tblEmpleados.getSelectionModel().clearSelection();
+    public void limpiarCampos(ActionEvent event) {
+        if (cmbUsuario != null) {
+            cmbUsuario.setValue(null);
+            cmbUsuario.setDisable(false);
+        }
+        if (txtEspecialidad != null) txtEspecialidad.clear();
+        if (txtTelefono != null) txtTelefono.clear();
+        if (txtHorario != null) txtHorario.clear();
+        if (txtBuscar != null) txtBuscar.clear();
+        if (tblEmpleados != null) tblEmpleados.getSelectionModel().clearSelection();
         empleadoSeleccionado = null;
-        txtIdUsuario.setDisable(false);
     }
 
     private void seleccionarElemento(Empleado empleado) {
         if (empleado != null) {
             empleadoSeleccionado = empleado;
-            txtIdUsuario.setText(String.valueOf(empleado.getIdUsuario()));
-            txtEspecialidad.setText(empleado.getEspecialidad());
-            txtTelefono.setText(empleado.getTelefono());
-            txtHorario.setText(empleado.getHorarioTrabajo());
-            txtIdUsuario.setDisable(true);
+            if (cmbUsuario != null) {
+                cmbUsuario.setValue(empleado.getIdUsuario() + " - " + empleado.getNombre());
+                cmbUsuario.setDisable(true); 
+            }
+            if (txtEspecialidad != null) txtEspecialidad.setText(empleado.getEspecialidad());
+            if (txtTelefono != null) txtTelefono.setText(empleado.getTelefono());
+            if (txtHorario != null) txtHorario.setText(empleado.getHorarioTrabajo());
         }
     }
 
     private boolean validarCampos() {
-        if (txtIdUsuario.getText().isEmpty() || txtEspecialidad.getText().isEmpty() ||
-            txtTelefono.getText().isEmpty() || txtHorario.getText().isEmpty()) {
-            mostrarAlerta(Alert.AlertType.WARNING, "Campos vacíos", "Por favor completa todos los campos.");
+        if (cmbUsuario == null || cmbUsuario.getValue() == null ||
+            txtEspecialidad == null || txtEspecialidad.getText().isEmpty() ||
+            txtTelefono == null || txtTelefono.getText().isEmpty() || 
+            txtHorario == null || txtHorario.getText().isEmpty()) {
+            mostrarAlerta(Alert.AlertType.WARNING, "Campos vacíos", "Por favor completa todos los campos requeridos.");
             return false;
         }
         return true;

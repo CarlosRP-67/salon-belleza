@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,18 +14,18 @@ public class FacturaRepository {
 
     public boolean registrar(Factura factura) {
         String sql = "INSERT INTO facturas (id_cliente, fecha_factura, total) VALUES (?, ?, ?)";
-
-        try (Connection conexion = DataBaseConnection.getConnection();
-             PreparedStatement pstmt = conexion.prepareStatement(sql)) {
-
-            pstmt.setInt(1, factura.getIdCliente());
-            pstmt.setString(2, factura.getFechaFactura());
-            pstmt.setDouble(3, factura.getTotal());
-
-            return pstmt.executeUpdate() > 0;
-
+        
+        try (Connection conn = DataBaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            
+            ps.setInt(1, factura.getIdCliente());
+            ps.setString(2, factura.getFechaFactura());
+            ps.setDouble(3, factura.getTotal());
+            
+            return ps.executeUpdate() > 0;
+            
         } catch (SQLException e) {
-            System.err.println("Error al registrar factura: " + e.getMessage());
+            System.err.println("Error al registrar la factura: " + e.getMessage());
             return false;
         }
     }
@@ -33,9 +34,9 @@ public class FacturaRepository {
         List<Factura> lista = new ArrayList<>();
         String sql = "SELECT id_factura, id_cliente, fecha_factura, total FROM facturas";
 
-        try (Connection conexion = DataBaseConnection.getConnection();
-             PreparedStatement pstmt = conexion.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
+        try (Connection conn = DataBaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 Factura factura = new Factura(
@@ -48,7 +49,7 @@ public class FacturaRepository {
             }
 
         } catch (SQLException e) {
-            System.err.println("Error al listar facturas: " + e.getMessage());
+            System.err.println("Error al listar las facturas: " + e.getMessage());
         }
 
         return lista;

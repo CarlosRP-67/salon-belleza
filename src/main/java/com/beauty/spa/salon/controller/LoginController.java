@@ -1,5 +1,8 @@
 package main.java.com.beauty.spa.salon.controller;
 
+import main.java.com.beauty.spa.salon.util.SceneManager;
+import java.io.File;
+import java.io.InputStream;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -9,15 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import main.java.com.beauty.spa.salon.util.SceneManager;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 
-/**
- * Controlador para la vista de inicio de sesión de Beauty Spa.
- * @author informatica
- */
 public class LoginController {
 
     @FXML
@@ -41,14 +36,12 @@ public class LoginController {
     @FXML
     public void initialize() {
         try {
-            // Intentamos primero por recursos por si acaso
             InputStream imageStream = getClass().getResourceAsStream("/images/spa-instalaciones.jpg");
             Image spaImage = null;
 
             if (imageStream != null) {
                 spaImage = new Image(imageStream);
             } else {
-                // Si el classpath falla, cargamos directamente desde la ruta física absoluta de tu proyecto
                 File file = new File("src/main/resources/images/spa-instalaciones.jpg");
                 if (file.exists()) {
                     spaImage = new Image(file.toURI().toString());
@@ -73,13 +66,11 @@ public class LoginController {
         String email = txtEmail.getText().trim();
         String password = txtPassword.getText().trim();
 
-        // Validación de campos vacíos con alerta modal gráfica
         if (email.isEmpty() || password.isEmpty()) {
             mostrarAlerta(Alert.AlertType.WARNING, "Campos Incompletos", "Por favor, complete todos los campos para continuar.");
             return;
         }
 
-        // Lógica de inicio de sesión y transición al Dashboard
         try {
             Stage currentStage = (Stage) btnLogin.getScene().getWindow();
             SceneManager sceneManager = new SceneManager(currentStage);

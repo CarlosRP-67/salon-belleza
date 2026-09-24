@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -53,7 +54,7 @@ public class FacturaController implements Initializable {
     }
 
     @FXML
-    public void guardarFactura() {
+    public void guardarFactura(ActionEvent event) {
         if (txtIdCliente.getText().isEmpty() || dpFechaFactura.getValue() == null || txtTotal.getText().isEmpty()) {
             mostrarAlerta(Alert.AlertType.WARNING, "Campos vacíos", "Por favor completa todos los campos.");
             return;

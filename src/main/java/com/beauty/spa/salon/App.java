@@ -1,4 +1,5 @@
 package main.java.com.beauty.spa.salon;
+
 import javafx.application.Application;
 import javafx.concurrent.Task;
 import javafx.geometry.Pos;
@@ -71,7 +72,7 @@ public class App extends Application {
         Scene splashScene = new Scene(splashRoot, 850, 500);
         stage.setScene(splashScene);
         stage.setTitle("Beauty Spa - Cargando componentes...");
-        stage.setMinWidth(750); // Evita que rompan el diseño haciéndola muy chica
+        stage.setMinWidth(750);
         stage.setMinHeight(450);
         stage.centerOnScreen();
         stage.show();

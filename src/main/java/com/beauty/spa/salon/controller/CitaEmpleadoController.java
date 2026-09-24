@@ -1,6 +1,6 @@
 package main.java.com.beauty.spa.salon.controller;
 
-import main.java.com.beauty.spa.salon.model.Cita;
+import main.java.com.beauty.spa.salon.model.CitaEmpleado;
 import main.java.com.beauty.spa.salon.service.CitaService;
 
 import java.net.URL;
@@ -21,15 +21,15 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-public class CitaController implements Initializable {
+public class CitaEmpleadoController implements Initializable {
 
-    @FXML private TableView<Cita> tblCitas;
-    @FXML private TableColumn<Cita, Integer> colIdCita;
-    @FXML private TableColumn<Cita, Integer> colIdCliente;
-    @FXML private TableColumn<Cita, Integer> colIdEmpleado;
-    @FXML private TableColumn<Cita, Integer> colIdServicio;
-    @FXML private TableColumn<Cita, String> colFechaHora;
-    @FXML private TableColumn<Cita, String> colEstado;
+    @FXML private TableView<CitaEmpleado> tblCitas;
+    @FXML private TableColumn<CitaEmpleado, Integer> colIdCita;
+    @FXML private TableColumn<CitaEmpleado, Integer> colIdCliente;
+    @FXML private TableColumn<CitaEmpleado, Integer> colIdEmpleado;
+    @FXML private TableColumn<CitaEmpleado, Integer> colIdServicio;
+    @FXML private TableColumn<CitaEmpleado, String> colFechaHora;
+    @FXML private TableColumn<CitaEmpleado, String> colEstado;
 
     @FXML private TextField txtIdCliente;
     @FXML private TextField txtIdEmpleado;
@@ -45,9 +45,9 @@ public class CitaController implements Initializable {
     @FXML private Button btnLimpiar;
 
     private final CitaService citaService = new CitaService();
-    private ObservableList<Cita> listaCitas;
-    private FilteredList<Cita> filteredData;
-    private Cita citaSeleccionada;
+    private ObservableList<CitaEmpleado> listaCitas;
+    private FilteredList<CitaEmpleado> filteredData;
+    private CitaEmpleado citaSeleccionada;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -92,7 +92,7 @@ public class CitaController implements Initializable {
             });
         }
 
-        SortedList<Cita> sortedData = new SortedList<>(filteredData);
+        SortedList<CitaEmpleado> sortedData = new SortedList<>(filteredData);
         sortedData.comparatorProperty().bind(tblCitas.comparatorProperty());
         tblCitas.setItems(sortedData);
     }
@@ -177,7 +177,7 @@ public class CitaController implements Initializable {
         citaSeleccionada = null;
     }
 
-    private void seleccionarElemento(Cita cita) {
+    private void seleccionarElemento(CitaEmpleado cita) {
         if (cita != null) {
             citaSeleccionada = cita;
             txtIdCliente.setText(String.valueOf(cita.getIdCliente()));

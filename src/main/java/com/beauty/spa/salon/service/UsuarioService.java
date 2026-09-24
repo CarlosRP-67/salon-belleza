@@ -34,7 +34,6 @@ public class UsuarioService {
 
         String contrasenaFinal;
         
-        // Si el usuario escribió una nueva contraseña, la encriptamos. Si la dejó vacía, conservamos la actual en BD.
         if (contrasenaPlana != null && !contrasenaPlana.trim().isEmpty()) {
             contrasenaFinal = BCrypt.hashpw(contrasenaPlana, BCrypt.gensalt());
         } else {

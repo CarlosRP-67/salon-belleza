@@ -1,13 +1,13 @@
 package main.java.com.beauty.spa.salon.model;
 
-public class Productos {
+public class ProductoUsuario {
     private int idProducto;
     private String nombreProducto;
     private String descripcion;
     private double precio;
     private int stock;
 
-    public Productos(int idProducto, String nombreProducto, String descripcion, double precio, int stock) {
+    public ProductoUsuario(int idProducto, String nombreProducto, String descripcion, double precio, int stock) {
         this.idProducto = idProducto;
         this.nombreProducto = nombreProducto;
         this.descripcion = descripcion;

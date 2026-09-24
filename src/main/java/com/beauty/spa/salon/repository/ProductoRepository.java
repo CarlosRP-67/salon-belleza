@@ -1,8 +1,8 @@
 package main.java.com.beauty.spa.salon.repository;
 
 import main.java.com.beauty.spa.salon.config.DataBaseConnection;
-import main.java.com.beauty.spa.salon.model.Producto;
-import main.java.com.beauty.spa.salon.model.Productos;
+import main.java.com.beauty.spa.salon.model.ProductoEmpleado;
+import main.java.com.beauty.spa.salon.model.ProductoUsuario;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ProductoRepository {
 
-    public boolean registrar(Producto producto) {
+    public boolean registrar(ProductoEmpleado producto) {
         String sql = "INSERT INTO productos (nombre_producto, descripcion, precio, stock) VALUES (?, ?, ?, ?)";
 
         try (Connection conexion = DataBaseConnection.getConnection();
@@ -32,7 +32,7 @@ public class ProductoRepository {
         }
     }
 
-    public boolean actualizar(Producto producto) {
+    public boolean actualizar(ProductoEmpleado producto) {
         String sql = "UPDATE productos SET nombre_producto = ?, descripcion = ?, precio = ?, stock = ? WHERE id_producto = ?";
 
         try (Connection conexion = DataBaseConnection.getConnection();
@@ -67,8 +67,8 @@ public class ProductoRepository {
         }
     }
 
-    public List<Producto> listarTodos() {
-        List<Producto> lista = new ArrayList<>();
+    public List<ProductoEmpleado> listarTodos() {
+        List<ProductoEmpleado> lista = new ArrayList<>();
         String sql = "SELECT id_producto, nombre_producto, descripcion, precio, stock FROM productos";
 
         try (Connection conexion = DataBaseConnection.getConnection();
@@ -76,7 +76,7 @@ public class ProductoRepository {
              ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
-                Producto producto = new Producto(
+                ProductoEmpleado producto = new ProductoEmpleado(
                     rs.getInt("id_producto"),
                     rs.getString("nombre_producto"),
                     rs.getString("descripcion"),
@@ -93,8 +93,8 @@ public class ProductoRepository {
         return lista;
     }
 
-    public List<Productos> obtenerProductosDisponibles() {
-        List<Productos> lista = new ArrayList<>();
+    public List<ProductoUsuario> obtenerProductosDisponibles() {
+        List<ProductoUsuario> lista = new ArrayList<>();
         String sql = "SELECT id_producto, nombre_producto, descripcion, precio, stock FROM productos WHERE stock > 0";
 
         try (Connection conn = DataBaseConnection.getConnection();
@@ -102,7 +102,7 @@ public class ProductoRepository {
              ResultSet rs = stm.executeQuery()) {
 
             while (rs.next()) {
-                Productos p = new Productos(
+                ProductoUsuario p = new ProductoUsuario(
                     rs.getInt("id_producto"),
                     rs.getString("nombre_producto"),
                     rs.getString("descripcion"),

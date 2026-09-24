@@ -1,6 +1,6 @@
 package main.java.com.beauty.spa.salon.model;
 
-public class Cita {
+public class CitaEmpleado {
     private int idCita;
     private int idCliente;
     private int idEmpleado;
@@ -8,10 +8,10 @@ public class Cita {
     private String fechaHora;
     private String estado;
 
-    public Cita() {
+    public CitaEmpleado() {
     }
 
-    public Cita(int idCita, int idCliente, int idEmpleado, int idServicio, String fechaHora, String estado) {
+    public CitaEmpleado(int idCita, int idCliente, int idEmpleado, int idServicio, String fechaHora, String estado) {
         this.idCita = idCita;
         this.idCliente = idCliente;
         this.idEmpleado = idEmpleado;
@@ -20,7 +20,7 @@ public class Cita {
         this.estado = estado;
     }
 
-    public Cita(int idCliente, int idEmpleado, int idServicio, String fechaHora, String estado) {
+    public CitaEmpleado(int idCliente, int idEmpleado, int idServicio, String fechaHora, String estado) {
         this.idCliente = idCliente;
         this.idEmpleado = idEmpleado;
         this.idServicio = idServicio;

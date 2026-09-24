@@ -1,6 +1,6 @@
 package main.java.com.beauty.spa.salon.service;
 
-import main.java.com.beauty.spa.salon.model.Producto;
+import main.java.com.beauty.spa.salon.model.ProductoEmpleado;
 import main.java.com.beauty.spa.salon.repository.ProductoRepository;
 import java.util.List;
 
@@ -13,7 +13,7 @@ public class ProductoService {
             return false;
         }
 
-        Producto producto = new Producto(nombre.trim(), descripcion != null ? descripcion.trim() : "", precio, stock);
+        ProductoEmpleado producto = new ProductoEmpleado(nombre.trim(), descripcion != null ? descripcion.trim() : "", precio, stock);
         return productoRepository.registrar(producto);
     }
 
@@ -22,7 +22,7 @@ public class ProductoService {
             return false;
         }
 
-        Producto producto = new Producto(idProducto, nombre.trim(), descripcion != null ? descripcion.trim() : "", precio, stock);
+        ProductoEmpleado producto = new ProductoEmpleado(idProducto, nombre.trim(), descripcion != null ? descripcion.trim() : "", precio, stock);
         return productoRepository.actualizar(producto);
     }
 
@@ -31,7 +31,7 @@ public class ProductoService {
         return productoRepository.eliminar(idProducto);
     }
 
-    public List<Producto> obtenerTodosLosProductos() {
+    public List<ProductoEmpleado> obtenerTodosLosProductos() {
         return productoRepository.listarTodos();
     }
 }

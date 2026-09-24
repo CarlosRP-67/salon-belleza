@@ -23,7 +23,7 @@ import java.sql.SQLException;
  * Controlador de servicios.fxml. Solo se llega aquí después de un
  * login de administrador correcto (ver LoginController).
  */
-public class ServiciosController {
+public class ServicioEmpleadoController {
 
     @FXML private Label lblTitulo;
     @FXML private TableView<Servicio> tabla;

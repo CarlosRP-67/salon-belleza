@@ -19,9 +19,9 @@ public class DetalleFactura {
     public DetalleFactura(Servicio servicio, int cantidad) {
         this.servicioId = servicio.getId();
         this.servicioNombre = servicio.getNombre();
-        this.precioUnitario = servicio.getPrecio();
+        this.precioUnitario = servicio.getPrecio() != null ? servicio.getPrecio().doubleValue() : 0.0;
         this.cantidad = cantidad;
-        this.subtotal = precioUnitario * cantidad;
+        this.subtotal = this.precioUnitario * cantidad;
     }
 
     public int getId() {

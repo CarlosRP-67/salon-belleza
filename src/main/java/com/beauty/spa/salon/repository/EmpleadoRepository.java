@@ -2,6 +2,7 @@ package main.java.com.beauty.spa.salon.repository;
 
 import main.java.com.beauty.spa.salon.config.DataBaseConnection;
 import main.java.com.beauty.spa.salon.model.Empleado;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,6 +12,7 @@ import java.util.List;
 
 public class EmpleadoRepository {
 
+    // Listar todos los empleados
     public List<Empleado> listarTodos() {
         List<Empleado> lista = new ArrayList<>();
         String sql = "SELECT e.id_empleado, e.id_usuario, e.especialidad, e.telefono, e.horario_trabajo, "
@@ -18,7 +20,7 @@ public class EmpleadoRepository {
                    + "FROM empleados e "
                    + "INNER JOIN usuarios u ON e.id_usuario = u.id_usuario";
 
-        try (Connection conn = DataBaseConnection.getConnection();
+        try (Connection conn = DataBaseConnection.getDataBaseConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
@@ -46,7 +48,7 @@ public class EmpleadoRepository {
     public boolean guardar(Empleado empleado) {
         String sql = "INSERT INTO empleados (id_usuario, especialidad, telefono, horario_trabajo) VALUES (?, ?, ?, ?)";
 
-        try (Connection conn = DataBaseConnection.getConnection();
+        try (Connection conn = DataBaseConnection.getDataBaseConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, empleado.getIdUsuario());
@@ -61,10 +63,11 @@ public class EmpleadoRepository {
         }
     }
 
+    // Actualizar datos de un empleado
     public boolean actualizar(Empleado empleado) {
         String sql = "UPDATE empleados SET especialidad = ?, telefono = ?, horario_trabajo = ? WHERE id_empleado = ?";
 
-        try (Connection conn = DataBaseConnection.getConnection();
+        try (Connection conn = DataBaseConnection.getDataBaseConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, empleado.getEspecialidad());
@@ -79,10 +82,11 @@ public class EmpleadoRepository {
         }
     }
 
+    // Eliminar un empleado por ID
     public boolean eliminar(int idEmpleado) {
         String sql = "DELETE FROM empleados WHERE id_empleado = ?";
 
-        try (Connection conn = DataBaseConnection.getConnection();
+        try (Connection conn = DataBaseConnection.getDataBaseConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, idEmpleado);
@@ -93,6 +97,7 @@ public class EmpleadoRepository {
         }
     }
 
+    // Buscar empleado por ID
     public Empleado obtenerPorId(int idEmpleado) {
         String sql = "SELECT e.id_empleado, e.id_usuario, e.especialidad, e.telefono, e.horario_trabajo, "
                    + "u.nombre, u.apellido, u.correo, u.nombre_usuario "
@@ -100,7 +105,7 @@ public class EmpleadoRepository {
                    + "INNER JOIN usuarios u ON e.id_usuario = u.id_usuario "
                    + "WHERE e.id_empleado = ?";
 
-        try (Connection conn = DataBaseConnection.getConnection();
+        try (Connection conn = DataBaseConnection.getDataBaseConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, idEmpleado);

@@ -10,8 +10,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.StringConverter;
-import main.java.com.beauty.spa.salon.model.Producto;
-import main.java.com.beauty.spa.salon.model.Productos;
+import main.java.com.beauty.spa.salon.model.ProductoEmpleado;
+import main.java.com.beauty.spa.salon.model.ProductoUsuario;
 import main.java.com.beauty.spa.salon.repository.ProductoRepository;
 import main.java.com.beauty.spa.salon.service.ProductoService;
 import main.java.com.beauty.spa.salon.util.SceneManager;
@@ -22,12 +22,12 @@ import java.util.ResourceBundle;
 public class ProductoController implements Initializable {
 
 
-    @FXML private TableView<Producto> tblProductos;
-    @FXML private TableColumn<Producto, Integer> colIdProducto;
-    @FXML private TableColumn<Producto, String> colNombre;
-    @FXML private TableColumn<Producto, String> colDescripcion;
-    @FXML private TableColumn<Producto, Double> colPrecio;
-    @FXML private TableColumn<Producto, Integer> colStock;
+    @FXML private TableView<ProductoEmpleado> tblProductos;
+    @FXML private TableColumn<ProductoEmpleado, Integer> colIdProducto;
+    @FXML private TableColumn<ProductoEmpleado, String> colNombre;
+    @FXML private TableColumn<ProductoEmpleado, String> colDescripcion;
+    @FXML private TableColumn<ProductoEmpleado, Double> colPrecio;
+    @FXML private TableColumn<ProductoEmpleado, Integer> colStock;
 
     @FXML private TextField txtNombre;
     @FXML private TextField txtDescripcion;
@@ -41,7 +41,7 @@ public class ProductoController implements Initializable {
     @FXML private Button btnLimpiar;
 
 
-    @FXML private ComboBox<Productos> cmbProductos;
+    @FXML private ComboBox<ProductoUsuario> cmbProductos;
     @FXML private Label lblDescripcion;
     @FXML private Label lblPrecioUnitario;
     @FXML private Spinner<Integer> spCantidad;
@@ -51,10 +51,10 @@ public class ProductoController implements Initializable {
     private final ProductoService productoService = new ProductoService();
     private final ProductoRepository productoRepository = new ProductoRepository();
     
-    private ObservableList<Producto> listaProductosCrud;
-    private final ObservableList<Productos> listaProductosDisponibles = FXCollections.observableArrayList();
-    private FilteredList<Producto> filteredData;
-    private Producto productoSeleccionado;
+    private ObservableList<ProductoEmpleado> listaProductosCrud;
+    private final ObservableList<ProductoUsuario> listaProductosDisponibles = FXCollections.observableArrayList();
+    private FilteredList<ProductoEmpleado> filteredData;
+    private ProductoEmpleado productoSeleccionado;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -113,7 +113,7 @@ public class ProductoController implements Initializable {
             });
         }
 
-        SortedList<Producto> sortedData = new SortedList<>(filteredData);
+        SortedList<ProductoEmpleado> sortedData = new SortedList<>(filteredData);
         sortedData.comparatorProperty().bind(tblProductos.comparatorProperty());
         tblProductos.setItems(sortedData);
     }
@@ -196,7 +196,7 @@ public class ProductoController implements Initializable {
         productoSeleccionado = null;
     }
 
-    private void seleccionarElementoCrud(Producto producto) {
+    private void seleccionarElementoCrud(ProductoEmpleado producto) {
         if (producto != null) {
             productoSeleccionado = producto;
             if (txtNombre != null) txtNombre.setText(producto.getNombre());
@@ -217,20 +217,20 @@ public class ProductoController implements Initializable {
 
     // --- MÉTODOS COMPRA / CATÁLOGO ---
     private void configurarComboBoxProductos() {
-        StringConverter<Productos> converter = new StringConverter<>() {
+        StringConverter<ProductoUsuario> converter = new StringConverter<>() {
             @Override
-            public String toString(Productos producto) {
+            public String toString(ProductoUsuario producto) {
                 return (producto != null) ? producto.getNombreProducto() : "";
             }
             @Override
-            public Productos fromString(String string) {
+            public ProductoUsuario fromString(String string) {
                 return null;
             }
         };
         cmbProductos.setConverter(converter);
-        cmbProductos.setCellFactory(cell -> new ListCell<Productos>() {
+        cmbProductos.setCellFactory(cell -> new ListCell<ProductoUsuario>() {
             @Override
-            protected void updateItem(Productos item, boolean empty) {
+            protected void updateItem(ProductoUsuario item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty || item == null) {
                     setText(null);
@@ -249,7 +249,7 @@ public class ProductoController implements Initializable {
         }
     }
 
-    private void actualizarDetallesProducto(Productos prod) {
+    private void actualizarDetallesProducto(ProductoUsuario prod) {
         if (prod != null) {
             if (lblDescripcion != null) lblDescripcion.setText(prod.getDescripcion());
             if (lblPrecioUnitario != null) lblPrecioUnitario.setText(String.format("Q%.2f", prod.getPrecio()));
@@ -263,7 +263,7 @@ public class ProductoController implements Initializable {
 
     private void recalcularTotalCompra() {
         if (cmbProductos == null || spCantidad == null || lblTotal == null) return;
-        Productos prod = cmbProductos.getValue();
+        ProductoUsuario prod = cmbProductos.getValue();
         if (prod != null && spCantidad.getValue() != null) {
             double total = prod.getPrecio() * spCantidad.getValue();
             lblTotal.setText(String.format("Q%.2f", total));
@@ -273,7 +273,7 @@ public class ProductoController implements Initializable {
     @FXML
     private void handleComprarAction(ActionEvent event) {
         if (cmbProductos == null || spCantidad == null) return;
-        Productos prod = cmbProductos.getValue();
+        ProductoUsuario prod = cmbProductos.getValue();
         if (prod == null) {
             mostrarAlerta(Alert.AlertType.WARNING, "Atención", "Seleccione un producto para comprar.");
             return;

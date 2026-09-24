@@ -5,15 +5,15 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import main.java.com.beauty.spa.salon.model.Citas;
-import main.java.com.beauty.spa.salon.repository.CitasRepository;
+import main.java.com.beauty.spa.salon.model.CitaUsuario;
+import main.java.com.beauty.spa.salon.repository.CitaUsuarioRepository;
 import main.java.com.beauty.spa.salon.util.SceneManager;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-public class CitasController {
+public class CitaUsuarioController {
 
     @FXML private ComboBox<String> cmbServicio;
     @FXML private DatePicker dpFecha;
@@ -21,7 +21,7 @@ public class CitasController {
     @FXML private ComboBox<String> cmbMinuto;
     @FXML private ListView<String> lvCitas;
 
-    private final CitasRepository citasRepository = new CitasRepository();
+    private final CitaUsuarioRepository citasRepository = new CitaUsuarioRepository();
     private final ObservableList<String> listaCitasVisual = FXCollections.observableArrayList();
     private final int ID_EMPLEADO_ACTUAL = 1;
 
@@ -65,7 +65,7 @@ public class CitasController {
         LocalDateTime fechaHoraCita = LocalDateTime.of(fecha, tiempo);
 
         int idCliente = SceneManager.getIdClienteActual();
-        Citas nuevaCita = new Citas(0, idCliente, ID_EMPLEADO_ACTUAL, idServicio, fechaHoraCita, "Pendiente");
+        CitaUsuario nuevaCita = new CitaUsuario(0, idCliente, ID_EMPLEADO_ACTUAL, idServicio, fechaHoraCita, "Pendiente");
 
         if (citasRepository.guardarCita(nuevaCita)) {
             mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito", "¡Cita programada correctamente!");

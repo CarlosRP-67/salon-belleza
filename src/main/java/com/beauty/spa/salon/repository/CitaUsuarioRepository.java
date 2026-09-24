@@ -1,6 +1,6 @@
 package main.java.com.beauty.spa.salon.repository;
 import main.java.com.beauty.spa.salon.config.DataBaseConnection;
-import main.java.com.beauty.spa.salon.model.Citas;
+import main.java.com.beauty.spa.salon.model.CitaUsuario;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,9 +9,9 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CitasRepository {
+public class CitaUsuarioRepository {
 
-    public boolean guardarCita(Citas citas) {
+    public boolean guardarCita(CitaUsuario citas) {
         String sql = "INSERT INTO citas (id_cliente, id_empleado, id_servicio, fecha_hora_cita, estado_cita) VALUES (?, ?, ?, ?, ?)";
         
         try (Connection conn = DataBaseConnection.getDataBaseConnection(); 

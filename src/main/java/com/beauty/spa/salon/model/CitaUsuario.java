@@ -2,7 +2,7 @@ package main.java.com.beauty.spa.salon.model;
 
 import java.time.LocalDateTime;
 
-public class Citas {
+public class CitaUsuario {
     private int idCita;
     private int idCliente;
     private int idEmpleado;
@@ -10,7 +10,7 @@ public class Citas {
     private LocalDateTime fechaHoraCita;
     private String estadoCita;
 
-    public Citas(int idCita, int idCliente, int idEmpleado, int idServicio, LocalDateTime fechaHoraCita, String estadoCita) {
+    public CitaUsuario(int idCita, int idCliente, int idEmpleado, int idServicio, LocalDateTime fechaHoraCita, String estadoCita) {
         this.idCita = idCita;
         this.idCliente = idCliente;
         this.idEmpleado = idEmpleado;

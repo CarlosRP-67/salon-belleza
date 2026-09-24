@@ -1,6 +1,6 @@
 package main.java.com.beauty.spa.salon.model;
 
-public class Producto {
+public class ProductoEmpleado {
 
     private int idProducto;
     private String nombre;
@@ -8,17 +8,17 @@ public class Producto {
     private double precio;
     private int stock;
 
-    public Producto() {
+    public ProductoEmpleado() {
     }
 
-    public Producto(String nombre, String descripcion, double precio, int stock) {
+    public ProductoEmpleado(String nombre, String descripcion, double precio, int stock) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
         this.stock = stock;
     }
 
-    public Producto(int idProducto, String nombre, String descripcion, double precio, int stock) {
+    public ProductoEmpleado(int idProducto, String nombre, String descripcion, double precio, int stock) {
         this.idProducto = idProducto;
         this.nombre = nombre;
         this.descripcion = descripcion;

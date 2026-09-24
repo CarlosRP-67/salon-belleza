@@ -1,21 +1,16 @@
 package main.java.com.beauty.spa.salon.controller;
 
 import main.java.com.beauty.spa.salon.model.Empleado;
-import main.java.com.beauty.spa.salon.model.Usuario;
 import main.java.com.beauty.spa.salon.repository.EmpleadoRepository;
-import main.java.com.beauty.spa.salon.repository.UsuarioRepository;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -31,11 +26,10 @@ public class EmpleadoController implements Initializable {
     @FXML private TableColumn<Empleado, String> colTelefono;
     @FXML private TableColumn<Empleado, String> colHorario;
 
-    @FXML private ComboBox<Usuario> cmbUsuario;
+    @FXML private TextField txtIdUsuario;
     @FXML private TextField txtEspecialidad;
     @FXML private TextField txtTelefono;
     @FXML private TextField txtHorario;
-    @FXML private TextField txtBuscar;
 
     @FXML private Button btnGuardar;
     @FXML private Button btnActualizar;
@@ -43,17 +37,12 @@ public class EmpleadoController implements Initializable {
     @FXML private Button btnLimpiar;
 
     private final EmpleadoRepository empleadoRepository = new EmpleadoRepository();
-    private final UsuarioRepository usuarioRepository = new UsuarioRepository();
-    
     private ObservableList<Empleado> listaEmpleados;
-    private ObservableList<Usuario> listaUsuarios;
-    private FilteredList<Empleado> filteredData;
     private Empleado empleadoSeleccionado;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarColumnas();
-        cargarUsuarios();
         cargarDatos();
 
         tblEmpleados.getSelectionModel().selectedItemProperty().addListener(
@@ -70,63 +59,28 @@ public class EmpleadoController implements Initializable {
         colHorario.setCellValueFactory(new PropertyValueFactory<>("horarioTrabajo"));
     }
 
-    private void cargarUsuarios() {
-        listaUsuarios = FXCollections.observableArrayList(usuarioRepository.listarTodos());
-        cmbUsuario.setItems(listaUsuarios);
-    }
-
     public void cargarDatos() {
         listaEmpleados = FXCollections.observableArrayList(empleadoRepository.listarTodos());
-        configurarBuscador();
-    }
-
-    private void configurarBuscador() {
-        filteredData = new FilteredList<>(listaEmpleados, p -> true);
-
-        if (txtBuscar != null) {
-            txtBuscar.textProperty().addListener((observable, oldValue, newValue) -> {
-                filteredData.setPredicate(empleado -> {
-                    if (newValue == null || newValue.isEmpty()) {
-                        return true;
-                    }
-
-                    String lowerCaseFilter = newValue.toLowerCase();
-
-                    if (empleado.getNombreCompleto() != null && empleado.getNombreCompleto().toLowerCase().contains(lowerCaseFilter)) {
-                        return true;
-                    } else if (empleado.getEspecialidad() != null && empleado.getEspecialidad().toLowerCase().contains(lowerCaseFilter)) {
-                        return true;
-                    } else if (empleado.getTelefono() != null && empleado.getTelefono().toLowerCase().contains(lowerCaseFilter)) {
-                        return true;
-                    }
-                    return false;
-                });
-            });
-        }
-
-        SortedList<Empleado> sortedData = new SortedList<>(filteredData);
-        sortedData.comparatorProperty().bind(tblEmpleados.comparatorProperty());
-        tblEmpleados.setItems(sortedData);
+        tblEmpleados.setItems(listaEmpleados);
     }
 
     @FXML
     public void guardarEmpleado() {
         if (!validarCampos()) return;
 
-        Usuario usuarioSeleccionado = cmbUsuario.getValue();
-        Empleado nuevo = new Empleado(
-            usuarioSeleccionado.getIdUsuario(), 
-            txtEspecialidad.getText(), 
-            txtTelefono.getText(), 
-            txtHorario.getText()
-        );
+        try {
+            int idUsuario = Integer.parseInt(txtIdUsuario.getText());
+            Empleado nuevo = new Empleado(idUsuario, txtEspecialidad.getText(), txtTelefono.getText(), txtHorario.getText());
 
-        if (empleadoRepository.guardar(nuevo)) {
-            mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito", "Empleado registrado correctamente.");
-            limpiarCampos();
-            cargarDatos();
-        } else {
-            mostrarAlerta(Alert.AlertType.ERROR, "Error", "No se pudo registrar el empleado.");
+            if (empleadoRepository.guardar(nuevo)) {
+                mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito", "Empleado registrado correctamente.");
+                limpiarCampos();
+                cargarDatos();
+            } else {
+                mostrarAlerta(Alert.AlertType.ERROR, "Error", "No se pudo registrar el empleado.");
+            }
+        } catch (NumberFormatException e) {
+            mostrarAlerta(Alert.AlertType.WARNING, "Advertencia", "El ID de usuario debe ser un número entero.");
         }
     }
 
@@ -139,10 +93,6 @@ public class EmpleadoController implements Initializable {
 
         if (!validarCampos()) return;
 
-        Usuario usuarioSeleccionado = cmbUsuario.getValue();
-        if (usuarioSeleccionado != null) {
-            empleadoSeleccionado.setIdUsuario(usuarioSeleccionado.getIdUsuario());
-        }
         empleadoSeleccionado.setEspecialidad(txtEspecialidad.getText());
         empleadoSeleccionado.setTelefono(txtTelefono.getText());
         empleadoSeleccionado.setHorarioTrabajo(txtHorario.getText());
@@ -174,38 +124,28 @@ public class EmpleadoController implements Initializable {
 
     @FXML
     public void limpiarCampos() {
-        cmbUsuario.getSelectionModel().clearSelection();
+        txtIdUsuario.clear();
         txtEspecialidad.clear();
         txtTelefono.clear();
         txtHorario.clear();
-        if (txtBuscar != null) txtBuscar.clear();
         tblEmpleados.getSelectionModel().clearSelection();
         empleadoSeleccionado = null;
-        cmbUsuario.setDisable(false);
+        txtIdUsuario.setDisable(false);
     }
 
     private void seleccionarElemento(Empleado empleado) {
         if (empleado != null) {
             empleadoSeleccionado = empleado;
-            
-            if (listaUsuarios != null) {
-                for (Usuario u : listaUsuarios) {
-                    if (u.getIdUsuario() == empleado.getIdUsuario()) {
-                        cmbUsuario.setValue(u);
-                        break;
-                    }
-                }
-            }
-            
+            txtIdUsuario.setText(String.valueOf(empleado.getIdUsuario()));
             txtEspecialidad.setText(empleado.getEspecialidad());
             txtTelefono.setText(empleado.getTelefono());
             txtHorario.setText(empleado.getHorarioTrabajo());
-            cmbUsuario.setDisable(true);
+            txtIdUsuario.setDisable(true);
         }
     }
 
     private boolean validarCampos() {
-        if (cmbUsuario.getValue() == null || txtEspecialidad.getText().isEmpty() ||
+        if (txtIdUsuario.getText().isEmpty() || txtEspecialidad.getText().isEmpty() ||
             txtTelefono.getText().isEmpty() || txtHorario.getText().isEmpty()) {
             mostrarAlerta(Alert.AlertType.WARNING, "Campos vacíos", "Por favor completa todos los campos.");
             return false;

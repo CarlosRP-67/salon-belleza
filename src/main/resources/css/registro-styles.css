@@ -1,42 +1,109 @@
-/* A) Fondo general: Tonos Neutros Suaves (Blanco Hueso / Gris Perla) */
 .mainFxmlClass {
     -fx-background-color: #F8F9FA; /* Blanco hueso / gris perla muy sutil */
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
 }
 
-/* Títulos principales: Azul Profundo / Grafito para formalidad y confianza */
+/* Títulos principales */
+.banner-container {
+    -fx-background-color: #f4f1ea;
+}
+
+.overlay-box {
+    -fx-padding: 30;
+    -fx-background-color: linear-gradient(to top, rgba(30, 30, 30, 0.7), transparent);
+}
+
+.banner-title {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.banner-subtitle {
+    -fx-text-fill: #e0e0e0;
+    -fx-font-size: 12px;
+    -fx-wrap-text: true;
+}
+
+/* ==========================================
+   PANEL DERECHO: FORMULARIO
+   ========================================== */
+
+.form-container {
+    -fx-padding: 20 35 20 35;
+    -fx-background-color: #FDFBF7; 
+}
+
 .titulo-label {
     -fx-font-size: 22px;
     -fx-font-weight: bold;
-    -fx-text-fill: #2C3E50; /* Azul profundo / Gris grafito */
+    -fx-text-fill: #2C3E50; 
     -fx-padding: 0 0 10 0;
 }
 
-/* Campos de texto estilizados */
-.text-field, .password-field {
-    -fx-background-color: #FFFFFF;
-    -fx-border-color: #D5DBDB;
-    -fx-border-radius: 5px;
-    -fx-background-radius: 5px;
-    -fx-padding: 10px;
-    -fx-font-size: 14px;
+.subtitulo-label {
+    -fx-text-fill: #7F8C8D; 
+    -fx-font-size: 12px;
+    -fx-padding: 0 0 8 0;
 }
 
-.text-field:focused, .password-field:focused {
-    -fx-border-color: #D4AC0D; /* Acento discreto (Dorado / Rosa cuarzo al enfocar) */
+/* Campos de texto y combos estilizados */
+.text-field, .password-field, .combo-box {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #D5DBDB;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-padding: 8px;
+    -fx-font-size: 13px;
+    -fx-text-fill: #2C3E50;
+}
+
+.text-field:focused, .password-field:focused, .combo-box:focused {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #C5A059; 
     -fx-border-width: 1.5px;
 }
 
-/* C) Botones de Acción: Azul Profundo / Gris Grafito con toque de elegancia */
+/* Botón flotante del ojo dentro de la contraseña */
+.eye-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #7F8C8D;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+    -fx-padding: 0 10 0 0;
+    -fx-background-insets: 0;
+}
+
+.eye-button:hover {
+    -fx-text-fill: #C5A059;
+    -fx-background-color: transparent;
+}
+
+/* Botón de Acción Principal */
 .button-action {
-    -fx-background-color: #2C3E50; /* Azul profundo profesional */
+    -fx-background-color: #2C3E50; 
     -fx-text-fill: #FFFFFF;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
-    -fx-background-radius: 5px;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-padding: 10px;
     -fx-cursor: hand;
     -fx-transition: 0.3s;
 }
 
 .button-action:hover {
-    -fx-background-color: #34495E; /* Tono ligeramente más claro al pasar el mouse */
+    -fx-background-color: #34495E;
+}
+
+.link-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #2C3E50;
+    -fx-underline: true;
+    -fx-cursor: hand;
+    -fx-font-size: 12px;
+}
+
+.link-button:hover {
+    -fx-text-fill: #C5A059;
 }

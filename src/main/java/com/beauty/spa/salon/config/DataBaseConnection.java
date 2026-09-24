@@ -24,7 +24,6 @@ public class DataBaseConnection {
         return conn;
     }
     
-    // Alias por si alguna otra parte llama a getDataBaseConnection()
     public static Connection getDataBaseConnection() throws SQLException {
         return getConnection();
     }

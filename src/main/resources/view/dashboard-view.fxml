@@ -23,6 +23,7 @@
             <Button mnemonicParsing="false" onAction="#cargarServicios" text="Catálogo de Servicios" prefWidth="200.0" styleClass="sidebar-button" />
             <Button mnemonicParsing="false" onAction="#cargarFacturas" text="Facturación" prefWidth="200.0" styleClass="sidebar-button" />
             <Button mnemonicParsing="false" onAction="#cargarCitas" text="Citas" prefWidth="200.0" styleClass="sidebar-button" />
+            <Button mnemonicParsing="false" onAction="#regresarLogin" text="Cerrar Sesión" prefWidth="200.0" styleClass="sidebar-button" />
          </children>
       </VBox>
    </left>

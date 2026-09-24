@@ -1,0 +1,48 @@
+/* ==========================================================
+   Dashboard y Barra Lateral - Beauty Spa
+   Paleta 100% en tonos rosas y nude (Sin marrones)
+   ========================================================== */
+
+.dashboard-root {
+    -fx-background-color: #FAF7F7;
+}
+
+/* Barra lateral con un tono rosa nude muy suave y elegante */
+.sidebar {
+    -fx-background-color: #F7EFEF;
+    -fx-padding: 20px 15px;
+    -fx-border-color: #EADCDC;
+    -fx-border-width: 0 1px 0 0;
+}
+
+/* Botones del menú con aspecto limpio y texto en tono malva/rosa oscuro (sin marrón) */
+.sidebar-button {
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #7D4E5B; /* Tono malva elegante */
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 12px 18px;
+    -fx-background-radius: 10px;
+    -fx-border-color: #E8D0D5;
+    -fx-border-radius: 10px;
+    -fx-border-width: 1px;
+    -fx-cursor: hand;
+}
+
+/* Efecto hover al pasar el mouse por los botones */
+.sidebar-button:hover {
+    -fx-background-color: #FDF6F8;
+    -fx-text-fill: #633D48;
+    -fx-effect: dropshadow(gaussian, rgba(125, 78, 91, 0.12), 8, 0, 0, 2);
+    -fx-border-color: #D6B2BC;
+}
+
+/* Botón activo / seleccionado con el rosa pastel exacto de las citas */
+.sidebar-button:pressed, .sidebar-button:focused {
+    -fx-background-color: #F2C4C4; /* Rosa pastel suave de las citas */
+    -fx-text-fill: #592E39;       /* Texto en rosa oscuro contrastante */
+    -fx-font-weight: bold;
+    -fx-border-color: #D9A0A0;
+}

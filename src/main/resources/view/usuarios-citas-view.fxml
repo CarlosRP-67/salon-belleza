@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="500.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.com.beauty.spa.salon.controller.CitaUsuarioController">
+   <children>
+      <SplitPane dividerPositions="0.45" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <items>
+          <AnchorPane minWidth="350.0">
+               <children>
+                  <VBox spacing="15.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+                     <children>
+                        <Label styleClass="titulo-spa" text="Apartar Nueva Cita" />
+                        
+                        <VBox spacing="5.0">
+                           <children>
+                              <Label styleClass="label-formulario" text="Seleccionar Servicio:" />
+                              <ComboBox fx:id="cmbServicio" maxWidth="1.7976931348623157E308" promptText="Seleccione un servicio..." />
+                           </children>
+                        </VBox>
+                        
+                        <VBox spacing="5.0">
+                           <children>
+                              <Label styleClass="label-formulario" text="Seleccionar Fecha:" />
+                              <DatePicker fx:id="dpFecha" maxWidth="1.7976931348623157E308" promptText="Seleccione la fecha..." />
+                           </children>
+                        </VBox>
+                        
+                        <VBox spacing="5.0">
+                           <children>
+                              <Label styleClass="label-formulario" text="Seleccionar Hora:" />
+                              <HBox spacing="10.0">
+                                 <children>
+                                    <ComboBox fx:id="cmbHora" maxWidth="1.7976931348623157E308" promptText="Hora" HBox.hgrow="ALWAYS" />
+                                    <ComboBox fx:id="cmbMinuto" maxWidth="1.7976931348623157E308" promptText="Minuto" HBox.hgrow="ALWAYS" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        
+                        <HBox alignment="BOTTOM_RIGHT" VBox.vgrow="ALWAYS">
+                           <children>
+                              <Button fx:id="btnAgregarCita" mnemonicParsing="false" onAction="#handleAgregarCitaAction" prefHeight="40.0" prefWidth="180.0" styleClass="button-principal" text="Apartar Cita" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+            
+          <AnchorPane minWidth="400.0" styleClass="panel-secundario">
+               <children>
+                  <VBox spacing="15.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+                     <children>
+                        <Label styleClass="titulo-spa" text="Mis Citas Agendadas" />
+                        <ListView fx:id="lvCitas" VBox.vgrow="ALWAYS" />
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>

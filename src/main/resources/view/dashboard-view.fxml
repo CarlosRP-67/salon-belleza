@@ -1,24 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="550.0" prefWidth="880.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <TabPane prefHeight="550.0" prefWidth="880.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <tabs>
-          <Tab text="Mis Citas">
-             <content>
-                <fx:include source="usuarios-citas-view.fxml" />
-             </content>
-          </Tab>
-          <Tab text="Comprar Productos">
-             <content>
-                <fx:include source="venta-productos-view.fxml" />
-             </content>
-          </Tab>
-        </tabs>
-      </TabPane>
-   </children>
-</AnchorPane>
+<BorderPane fx:id="rootPane" prefHeight="600.0" prefWidth="950.0" 
+            styleClass="dashboard-root" 
+            stylesheets="@../css/dashboard-view.css" 
+            xmlns="http://javafx.com/javafx/21" 
+            xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="main.java.com.beauty.spa.salon.controller.DashboardController">
+   
+   <!-- MENÚ LATERAL IZQUIERDO -->
+   <left>
+      <VBox prefWidth="230.0" spacing="12.0" styleClass="sidebar" BorderPane.alignment="CENTER">
+         <children>
+            <Button mnemonicParsing="false" onAction="#cargarUsuarios" text="Gestión de Usuarios" prefWidth="200.0" styleClass="sidebar-button" />
+            <Button mnemonicParsing="false" onAction="#cargarClientes" text="Gestión de Clientes" prefWidth="200.0" styleClass="sidebar-button" />
+            <Button mnemonicParsing="false" onAction="#cargarEmpleados" text="Gestión de Empleados" prefWidth="200.0" styleClass="sidebar-button" />
+            <Button mnemonicParsing="false" onAction="#cargarProductos" text="Productos / Compras" prefWidth="200.0" styleClass="sidebar-button" />
+            <Button mnemonicParsing="false" onAction="#cargarServicios" text="Catálogo de Servicios" prefWidth="200.0" styleClass="sidebar-button" />
+            <Button mnemonicParsing="false" onAction="#cargarFacturas" text="Facturación" prefWidth="200.0" styleClass="sidebar-button" />
+            <Button mnemonicParsing="false" onAction="#cargarCitas" text="Citas" prefWidth="200.0" styleClass="sidebar-button" />
+         </children>
+      </VBox>
+   </left>
+   
+   <!-- PANEL CENTRAL DINÁMICO -->
+   <center>
+      <AnchorPane fx:id="contentArea" prefHeight="600.0" prefWidth="720.0" BorderPane.alignment="CENTER" />
+   </center>
+   
+</BorderPane>

@@ -1,8 +1,10 @@
 package main.java.com.beauty.spa.salon.model;
 
+import java.math.BigDecimal;
+
 /**
  * Representa una línea dentro de una factura: un servicio comprado,
- * con su cantidad y subtotal.
+ * con su cantidad, precio unitario y subtotal.
  */
 public class DetalleFactura {
 
@@ -17,10 +19,17 @@ public class DetalleFactura {
     }
 
     public DetalleFactura(Servicio servicio, int cantidad) {
-        this.servicioId = servicio.getId();
-        this.servicioNombre = servicio.getNombre();
-        this.precioUnitario = servicio.getPrecio() != null ? servicio.getPrecio().doubleValue() : 0.0;
+        this.servicioId = servicio.getIdServicio(); 
+        this.servicioNombre = servicio.getNombreServicio();
         this.cantidad = cantidad;
+        
+        
+        if (servicio.getPrecio() != null) {
+            this.precioUnitario = servicio.getPrecio().doubleValue();
+        } else {
+            this.precioUnitario = 0.0;
+        }
+        
         this.subtotal = this.precioUnitario * cantidad;
     }
 
@@ -54,7 +63,7 @@ public class DetalleFactura {
 
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
-        this.subtotal = this.precioUnitario * cantidad;
+        this.subtotal = this.precioUnitario * this.cantidad;
     }
 
     public double getPrecioUnitario() {
@@ -63,6 +72,7 @@ public class DetalleFactura {
 
     public void setPrecioUnitario(double precioUnitario) {
         this.precioUnitario = precioUnitario;
+        this.subtotal = this.precioUnitario * this.cantidad;
     }
 
     public double getSubtotal() {

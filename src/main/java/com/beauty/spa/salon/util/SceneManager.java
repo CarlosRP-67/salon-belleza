@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import javafx.scene.layout.AnchorPane;
 
 public class SceneManager {
 
@@ -40,6 +41,9 @@ public class SceneManager {
         cargarVistaFisica("src/main/resources/view/venta-productos-view.fxml", "src/main/resources/css/venta-produtos-view.css", "Beauty Spa - Catálogo de Productos");
     }
 
+    public void showServicioView() {
+        cargarVistaFisica("src/main/resources/view/servicio-view.fxml","src/main/resources/css/servicio-view.css", "Beauty Spa - Menú Principal");
+    }
     public void cargarVistaClasspath(String rutaFxml, String rutaCss, String titulo) {
 
         String fxmlFisico = "src/main/resources" + (rutaFxml.startsWith("/") ? rutaFxml : "/" + rutaFxml);
@@ -86,4 +90,41 @@ public class SceneManager {
             e.printStackTrace();
         }
     }
+   public void cargarVistaEnCentro(AnchorPane contentArea, String rutaFxml, String rutaCss) {
+    File archivoFxml = new File(rutaFxml);
+    if (!archivoFxml.exists()) {
+        System.err.println("¡ERROR! No existe el archivo físico en la ruta: " + archivoFxml.getAbsolutePath());
+        return;
+    }
+
+    try (FileInputStream fis = new FileInputStream(archivoFxml)) {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(archivoFxml.getParentFile().toURI().toURL());
+        Parent vista = loader.load(fis);
+
+        if (rutaCss != null && !rutaCss.isEmpty()) {
+            File cssFile = new File(rutaCss);
+            if (cssFile.exists()) {
+                String cssUrl = cssFile.toURI().toString();
+                if (!vista.getStylesheets().contains(cssUrl)) {
+                    vista.getStylesheets().add(cssUrl);
+                }
+            }
+        }
+
+        contentArea.getChildren().setAll(vista);
+
+        // ESTO ES LO QUE FALTABA: Forzar que la vista se expanda al 100% del AnchorPane central
+        if (vista instanceof AnchorPane) {
+            AnchorPane.setTopAnchor(vista, 0.0);
+            AnchorPane.setBottomAnchor(vista, 0.0);
+            AnchorPane.setLeftAnchor(vista, 0.0);
+            AnchorPane.setRightAnchor(vista, 0.0);
+        }
+
+    } catch (IOException e) {
+        System.err.println("¡ERROR CRÍTICO! Falló la carga de la vista en el centro: " + rutaFxml);
+        e.printStackTrace();
+    }
+}
 }

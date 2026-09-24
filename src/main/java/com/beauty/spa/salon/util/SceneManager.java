@@ -114,7 +114,6 @@ public class SceneManager {
 
         contentArea.getChildren().setAll(vista);
 
-        // ESTO ES LO QUE FALTABA: Forzar que la vista se expanda al 100% del AnchorPane central
         if (vista instanceof AnchorPane) {
             AnchorPane.setTopAnchor(vista, 0.0);
             AnchorPane.setBottomAnchor(vista, 0.0);

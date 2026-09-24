@@ -55,4 +55,10 @@ public class DashboardController {
     private void cargarCitas(ActionEvent event) {
         getSceneManager().cargarVistaEnCentro(contentArea, "src/main/resources/view/usuarios-citas-view.fxml", "src/main/resources/css/usuarios-citas-view.css");
     }
+    
+    @FXML
+    private void regresarLogin(ActionEvent event) {
+        getSceneManager().showLoginView();
+    }
+    
 }

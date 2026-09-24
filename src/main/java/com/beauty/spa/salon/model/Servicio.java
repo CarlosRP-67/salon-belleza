@@ -1,15 +1,17 @@
 package main.java.com.beauty.spa.salon.model;
 
+import java.math.BigDecimal;
+
 /**
  * Representa un servicio del salón (por ejemplo: corte de cabello,
- * manicure, tinte, etc.). Solo un administrador puede crearlos.
+ * manicure, tinte, etc.).
  */
 public class Servicio {
 
-    private int id;
-    private String nombre;
+    private int idServicio;
+    private String nombreServicio;
     private String descripcion;
-    private double precio;
+    private BigDecimal precio;
     private int duracionMinutos;
     private boolean activo;
 
@@ -17,70 +19,78 @@ public class Servicio {
         this.activo = true;
     }
 
-    public Servicio(String nombre, String descripcion, double precio, int duracionMinutos) {
-        this(0, nombre, descripcion, precio, duracionMinutos, true);
+    public Servicio(int idServicio, String nombreServicio, String descripcion,
+                    BigDecimal precio, int duracionMinutos) {
+        this(idServicio, nombreServicio, descripcion, precio, duracionMinutos, true);
     }
 
-    public Servicio(int id, String nombre, String descripcion, double precio,
-            int duracionMinutos, boolean activo) {
-        this.id = id;
-        this.nombre = nombre;
+    public Servicio(int idServicio, String nombreServicio, String descripcion,
+                    BigDecimal precio, int duracionMinutos, boolean activo) {
+        this.idServicio = idServicio;
+        this.nombreServicio = nombreServicio;
         this.descripcion = descripcion;
         this.precio = precio;
         this.duracionMinutos = duracionMinutos;
         this.activo = activo;
     }
 
-    public int getId() {
-        return id;
+    // Constructor opcional usando double por si en un DAO o vista se pasa double
+    public Servicio(int idServicio, String nombreServicio, String descripcion,
+                    double precioDouble, int duracionMinutos, boolean activo) {
+        this(idServicio, nombreServicio, descripcion, BigDecimal.valueOf(precioDouble), duracionMinutos, activo);
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public int getIdServicio() {
+        return idServicio; 
+    }
+    public void setIdServicio(int idServicio) { 
+        this.idServicio = idServicio; 
     }
 
-    public String getNombre() {
-        return nombre;
+    // Métodos de compatibilidad corta (por si otras vistas llaman getId o getNombre)
+    public int getId() { return idServicio; }
+    public void setId(int id) { this.idServicio = id; }
+
+    public String getNombreServicio() { 
+        return nombreServicio; 
+    }
+    public void setNombreServicio(String nombreServicio) {
+        this.nombreServicio = nombreServicio; 
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+    public String getNombre() { return nombreServicio; }
+    public void setNombre(String nombre) { this.nombreServicio = nombre; }
 
     public String getDescripcion() {
-        return descripcion;
+        return descripcion; 
     }
-
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+        this.descripcion = descripcion; 
     }
 
-    public double getPrecio() {
+    public BigDecimal getPrecio() {
         return precio;
     }
-
-    public void setPrecio(double precio) {
-        this.precio = precio;
+    public void setPrecio(BigDecimal precio) {
+        this.precio = precio; 
     }
 
-    public int getDuracionMinutos() {
+    public int getDuracionMinutos() { 
         return duracionMinutos;
     }
-
     public void setDuracionMinutos(int duracionMinutos) {
-        this.duracionMinutos = duracionMinutos;
+        this.duracionMinutos = duracionMinutos; 
     }
 
     public boolean isActivo() {
         return activo;
     }
-
     public void setActivo(boolean activo) {
         this.activo = activo;
     }
 
     @Override
     public String toString() {
-        return nombre + " - $" + precio;
+        return nombreServicio + " - $" + precio;
     }
 }

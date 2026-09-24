@@ -107,11 +107,6 @@ public class ServicioEmpleadoController {
         }
     }
 
-    @FXML
-    private void volverAlMenu(ActionEvent event) {
-        Stage stage = (Stage) tabla.getScene().getWindow();
-        SceneNavigator.cambiarA(stage, "/main/resources/fxml/main_menu.fxml");
-    }
 
     private void mostrarAlerta(AlertType tipo, String mensaje) {
         new Alert(tipo, mensaje).showAndWait();

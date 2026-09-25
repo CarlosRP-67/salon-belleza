@@ -19,6 +19,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         this.stage = stage;
+
         try {
             InputStream iconStream = getClass().getResourceAsStream("/images/beauty-logo.png");
             if (iconStream == null) {

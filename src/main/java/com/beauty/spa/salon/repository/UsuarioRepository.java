@@ -15,7 +15,7 @@ public class UsuarioRepository {
         String sql = "INSERT INTO usuarios (nombre, apellido, nombre_usuario, correo, contrasena, id_rol) VALUES (?, ?, ?, ?, ?, ?)";
         
         try (Connection conexion = DataBaseConnection.getConnection();
-             PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+             PreparedStatement pstmt = conexion.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             
             pstmt.setString(1, usuario.getNombre());
             pstmt.setString(2, usuario.getApellido());
@@ -24,7 +24,24 @@ public class UsuarioRepository {
             pstmt.setString(5, usuario.getContrasena()); 
             pstmt.setInt(6, usuario.getIdRol());
             
-            return pstmt.executeUpdate() > 0;
+            int affectedRows = pstmt.executeUpdate();
+            
+            if (affectedRows > 0) {
+                if (usuario.getIdRol() == 2) {
+                    try (ResultSet rs = pstmt.getGeneratedKeys()) {
+                        if (rs.next()) {
+                            int idUsuario = rs.getInt(1);
+                            String sqlCliente = "INSERT INTO clientes (id_usuario, telefono, direccion) VALUES (?, '', '')";
+                            try (PreparedStatement pstmtCliente = conexion.prepareStatement(sqlCliente)) {
+                                pstmtCliente.setInt(1, idUsuario);
+                                pstmtCliente.executeUpdate();
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+            return false;
             
         } catch (SQLException e) {
             System.err.println("Error al registrar el usuario en la BD: " + e.getMessage());
@@ -46,7 +63,25 @@ public class UsuarioRepository {
             pstmt.setInt(6, usuario.getIdRol());
             pstmt.setInt(7, usuario.getIdUsuario());
             
-            return pstmt.executeUpdate() > 0;
+            boolean actualizado = pstmt.executeUpdate() > 0;
+            
+            if (actualizado && usuario.getIdRol() == 2) {
+                String checkSql = "SELECT COUNT(*) FROM clientes WHERE id_usuario = ?";
+                try (PreparedStatement checkStmt = conexion.prepareStatement(checkSql)) {
+                    checkStmt.setInt(1, usuario.getIdUsuario());
+                    try (ResultSet rs = checkStmt.executeQuery()) {
+                        if (rs.next() && rs.getInt(1) == 0) {
+                            String insertCliente = "INSERT INTO clientes (id_usuario, telefono, direccion) VALUES (?, '', '')";
+                            try (PreparedStatement insertStmt = conexion.prepareStatement(insertCliente)) {
+                                insertStmt.setInt(1, usuario.getIdUsuario());
+                                insertStmt.executeUpdate();
+                            }
+                        }
+                    }
+                }
+            }
+            
+            return actualizado;
             
         } catch (SQLException e) {
             System.err.println("Error al actualizar el usuario en la BD: " + e.getMessage());

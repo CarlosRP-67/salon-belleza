@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
@@ -172,12 +173,19 @@ public class UsuarioController implements Initializable {
             return;
         }
 
-        if (usuarioService.eliminarUsuario(usuarioSeleccionado.getIdUsuario())) {
-            mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito", "Usuario eliminado correctamente.");
-            limpiarCampos();
-            cargarDatos();
-        } else {
-            mostrarAlerta(Alert.AlertType.ERROR, "Error", "No se pudo eliminar el usuario.");
+        Alert alertaConfirm = new Alert(Alert.AlertType.CONFIRMATION);
+        alertaConfirm.setTitle("Confirmar eliminación");
+        alertaConfirm.setHeaderText(null);
+        alertaConfirm.setContentText("¿Estás seguro de que quieres eliminar este usuario?");
+
+        if (alertaConfirm.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+            if (usuarioService.eliminarUsuario(usuarioSeleccionado.getIdUsuario())) {
+                mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito", "Usuario eliminado correctamente.");
+                limpiarCampos();
+                cargarDatos();
+            } else {
+                mostrarAlerta(Alert.AlertType.ERROR, "Error", "No se pudo eliminar el usuario.");
+            }
         }
     }
 

@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -161,12 +162,19 @@ public class ClienteController implements Initializable {
             return;
         }
 
-        if (clienteRepository.eliminar(clienteSeleccionado.getIdCliente())) {
-            mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito", "Cliente eliminado correctamente.");
-            limpiarCampos();
-            cargarDatos();
-        } else {
-            mostrarAlerta(Alert.AlertType.ERROR, "Error", "No se pudo eliminar el cliente.");
+        Alert alertaConfirm = new Alert(Alert.AlertType.CONFIRMATION);
+        alertaConfirm.setTitle("Confirmar eliminación");
+        alertaConfirm.setHeaderText(null);
+        alertaConfirm.setContentText("¿Estás seguro de que quieres eliminar este cliente?");
+
+        if (alertaConfirm.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+            if (clienteRepository.eliminar(clienteSeleccionado.getIdCliente())) {
+                mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito", "Cliente eliminado correctamente.");
+                limpiarCampos();
+                cargarDatos();
+            } else {
+                mostrarAlerta(Alert.AlertType.ERROR, "Error", "No se pudo eliminar el cliente.");
+            }
         }
     }
 

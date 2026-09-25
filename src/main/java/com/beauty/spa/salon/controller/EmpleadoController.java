@@ -8,7 +8,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import main.java.com.beauty.spa.salon.model.Empleado;
+import main.java.com.beauty.spa.salon.model.Usuario;
 import main.java.com.beauty.spa.salon.repository.EmpleadoRepository;
+import main.java.com.beauty.spa.salon.repository.UsuarioRepository;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -23,7 +25,7 @@ public class EmpleadoController implements Initializable {
     @FXML private TableColumn<Empleado, String> colTelefono;
     @FXML private TableColumn<Empleado, String> colHorario;
 
-    @FXML private ComboBox<String> cmbUsuario;
+    @FXML private ComboBox<Usuario> cmbUsuario;
     @FXML private TextField txtEspecialidad;
     @FXML private TextField txtTelefono;
     @FXML private TextField txtHorario;
@@ -35,17 +37,16 @@ public class EmpleadoController implements Initializable {
     @FXML private Button btnLimpiar;
 
     private final EmpleadoRepository empleadoRepository = new EmpleadoRepository();
+    private final UsuarioRepository usuarioRepository = new UsuarioRepository();
     private ObservableList<Empleado> listaEmpleados;
+    private ObservableList<Usuario> listaUsuarios;
     private Empleado empleadoSeleccionado;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarColumnas();
+        cargarUsuarios();
         cargarDatos();
-        
-        if (cmbUsuario != null) {
-            cmbUsuario.setItems(FXCollections.observableArrayList("1 - Administrador", "2 - Estilista", "3 - Recepcionista"));
-        }
 
         if (tblEmpleados != null) {
             tblEmpleados.getSelectionModel().selectedItemProperty().addListener(
@@ -63,6 +64,13 @@ public class EmpleadoController implements Initializable {
         if (colHorario != null) colHorario.setCellValueFactory(new PropertyValueFactory<>("horarioTrabajo"));
     }
 
+    private void cargarUsuarios() {
+        listaUsuarios = FXCollections.observableArrayList(usuarioRepository.listarTodos());
+        if (cmbUsuario != null) {
+            cmbUsuario.setItems(listaUsuarios);
+        }
+    }
+
     public void cargarDatos() {
         listaEmpleados = FXCollections.observableArrayList(empleadoRepository.listarTodos());
         if (tblEmpleados != null) {
@@ -74,13 +82,23 @@ public class EmpleadoController implements Initializable {
     public void guardarEmpleado(ActionEvent event) {
         if (!validarCampos()) return;
 
-        try {
-            String seleccion = cmbUsuario.getValue();
-            int idUsuario = Integer.parseInt(seleccion.split(" - ")[0]);
+        Usuario usuarioSeleccionado = cmbUsuario.getSelectionModel().getSelectedItem();
+        if (usuarioSeleccionado == null) {
+            mostrarAlerta(Alert.AlertType.WARNING, "Advertencia", "Seleccione un usuario válido.");
+            return;
+        }
 
+        for (Empleado emp : listaEmpleados) {
+            if (emp.getIdUsuario() == usuarioSeleccionado.getIdUsuario()) {
+                mostrarAlerta(Alert.AlertType.WARNING, "Usuario duplicado", "Este usuario ya tiene un empleado registrado.");
+                return;
+            }
+        }
+
+        try {
             Empleado nuevo = new Empleado(
                 0, 
-                idUsuario, 
+                usuarioSeleccionado.getIdUsuario(), 
                 txtEspecialidad.getText(), 
                 txtTelefono.getText(), 
                 txtHorario.getText(), 
@@ -95,7 +113,7 @@ public class EmpleadoController implements Initializable {
                 mostrarAlerta(Alert.AlertType.ERROR, "Error", "No se pudo registrar el empleado.");
             }
         } catch (Exception e) {
-            mostrarAlerta(Alert.AlertType.WARNING, "Formato incorrecto", "Seleccione un usuario válido de la lista.");
+            mostrarAlerta(Alert.AlertType.ERROR, "Error", "Ocurrió un error al guardar.");
         }
     }
 
@@ -131,19 +149,26 @@ public class EmpleadoController implements Initializable {
             return;
         }
 
-        if (empleadoRepository.eliminar(empleadoSeleccionado.getIdEmpleado())) {
-            mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito", "Empleado eliminado correctamente.");
-            limpiarCampos(null);
-            cargarDatos();
-        } else {
-            mostrarAlerta(Alert.AlertType.ERROR, "Error", "No se pudo eliminar el empleado.");
+        Alert alertaConfirm = new Alert(Alert.AlertType.CONFIRMATION);
+        alertaConfirm.setTitle("Confirmar eliminación");
+        alertaConfirm.setHeaderText(null);
+        alertaConfirm.setContentText("¿Estás seguro de que quieres eliminar este empleado?");
+
+        if (alertaConfirm.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+            if (empleadoRepository.eliminar(empleadoSeleccionado.getIdEmpleado())) {
+                mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito", "Empleado eliminado correctamente.");
+                limpiarCampos(null);
+                cargarDatos();
+            } else {
+                mostrarAlerta(Alert.AlertType.ERROR, "Error", "No se pudo eliminar el empleado.");
+            }
         }
     }
 
     @FXML
     public void limpiarCampos(ActionEvent event) {
         if (cmbUsuario != null) {
-            cmbUsuario.setValue(null);
+            cmbUsuario.getSelectionModel().clearSelection();
             cmbUsuario.setDisable(false);
         }
         if (txtEspecialidad != null) txtEspecialidad.clear();
@@ -158,7 +183,12 @@ public class EmpleadoController implements Initializable {
         if (empleado != null) {
             empleadoSeleccionado = empleado;
             if (cmbUsuario != null) {
-                cmbUsuario.setValue(empleado.getIdUsuario() + " - " + empleado.getNombre());
+                for (Usuario u : cmbUsuario.getItems()) {
+                    if (u.getIdUsuario() == empleado.getIdUsuario()) {
+                        cmbUsuario.getSelectionModel().select(u);
+                        break;
+                    }
+                }
                 cmbUsuario.setDisable(true); 
             }
             if (txtEspecialidad != null) txtEspecialidad.setText(empleado.getEspecialidad());
@@ -168,7 +198,7 @@ public class EmpleadoController implements Initializable {
     }
 
     private boolean validarCampos() {
-        if (cmbUsuario == null || cmbUsuario.getValue() == null ||
+        if (cmbUsuario == null || cmbUsuario.getSelectionModel().getSelectedItem() == null ||
             txtEspecialidad == null || txtEspecialidad.getText().isEmpty() ||
             txtTelefono == null || txtTelefono.getText().isEmpty() || 
             txtHorario == null || txtHorario.getText().isEmpty()) {

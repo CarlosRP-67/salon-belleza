@@ -42,9 +42,9 @@ public class CitaUsuarioController {
         listaCitasVisual.clear();
         int idCliente = SceneManager.getIdClienteActual();
         
-        // Si es admin o no hay cliente logueado, podemos mostrar un ID por defecto (ej. 1) o todas las citas
+        
         if (idCliente <= 0) {
-            idCliente = 1; // ID de cliente genérico para administradores
+            idCliente = 1; 
         }
         
         listaCitasVisual.addAll(citasRepository.obtenerCitasPorCliente(idCliente));
@@ -62,11 +62,9 @@ public class CitaUsuarioController {
             return;
         }
 
-        // Obtenemos el ID del cliente actual
         int idCliente = SceneManager.getIdClienteActual();
         
-        // CORRECCIÓN: Si es un administrador (u otro rol sin ID de cliente), 
-        // asignamos por defecto el ID 1 (asegúrate de tener un cliente con id_cliente = 1 en tu BD)
+        
         if (idCliente <= 0) {
             idCliente = 1; 
         }

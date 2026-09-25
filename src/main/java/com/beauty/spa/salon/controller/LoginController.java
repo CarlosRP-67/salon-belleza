@@ -1,6 +1,11 @@
 package main.java.com.beauty.spa.salon.controller;
 
 import main.java.com.beauty.spa.salon.util.SceneManager;
+import main.java.com.beauty.spa.salon.dto.request.LoginDTORequest;
+import main.java.com.beauty.spa.salon.dto.response.LoginDTOResponse;
+import main.java.com.beauty.spa.salon.repository.AuthRepository;
+import main.java.com.beauty.spa.salon.service.AuthService;
+
 import java.io.File;
 import java.io.InputStream;
 import javafx.event.ActionEvent;
@@ -30,9 +35,8 @@ public class LoginController {
     @FXML
     private ImageView imgSpaBanner;
 
-    /**
-     * Método de inicialización que se ejecuta automáticamente al cargar la vista.
-     */
+    private final AuthService authService = new AuthService(new AuthRepository());
+
     @FXML
     public void initialize() {
         try {
@@ -50,17 +54,12 @@ public class LoginController {
 
             if (spaImage != null && imgSpaBanner != null) {
                 imgSpaBanner.setImage(spaImage);
-            } else {
-                System.out.println("Aviso: No se pudo localizar el archivo de imagen en la ruta física.");
             }
         } catch (Exception e) {
-            System.out.println("Aviso: No se pudo cargar la imagen del banner automáticamente: " + e.getMessage());
+            System.out.println("Aviso: No se pudo cargar la imagen del banner: " + e.getMessage());
         }
     }
 
-    /**
-     * Acción del botón para iniciar sesión en el sistema.
-     */
     @FXML
     private void handleLoginButtonAction(ActionEvent event) {
         String email = txtEmail.getText().trim();
@@ -72,17 +71,32 @@ public class LoginController {
         }
 
         try {
+            LoginDTORequest request = new LoginDTORequest(email, password);
+            
+            LoginDTOResponse response = authService.login(request);
+
+            if (response == null) {
+                mostrarAlerta(Alert.AlertType.ERROR, "Acceso Denegado", "Correo o contraseña incorrectos.");
+                return;
+            }
+
+            String rolUsuario = response.getNombreRol();
+            System.out.println(">>> Login exitoso para: " + response.getNombre() + " | Rol obtenido de BD: [" + rolUsuario + "]");
+
+            SceneManager.setRolUsuarioActual(rolUsuario);
+
             Stage currentStage = (Stage) btnLogin.getScene().getWindow();
             SceneManager sceneManager = new SceneManager(currentStage);
             sceneManager.showMainDashboard();
+            
+        } catch (RuntimeException e) {
+            mostrarAlerta(Alert.AlertType.ERROR, "Error de Autenticación", e.getMessage());
         } catch (Exception e) {
-            mostrarAlerta(Alert.AlertType.ERROR, "Error de Sistema", "No se pudo abrir el menú principal: " + e.getMessage());
+            mostrarAlerta(Alert.AlertType.ERROR, "Error de Sistema", "Ocurrió un error inesperado: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
-    /**
-     * Acción del botón para redirigir a la vista de registro de usuario.
-     */
     @FXML
     private void handleRegisterButtonAction(ActionEvent event) {
         try {
@@ -94,9 +108,6 @@ public class LoginController {
         }
     }
 
-    /**
-     * Método auxiliar para mostrar alertas modales en la interfaz gráfica.
-     */
     private void mostrarAlerta(Alert.AlertType tipo, String titulo, String mensaje) {
         Alert alerta = new Alert(tipo);
         alerta.setTitle(titulo);

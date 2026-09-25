@@ -3,6 +3,7 @@ package main.java.com.beauty.spa.salon.controller;
 import main.java.com.beauty.spa.salon.util.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -11,7 +12,47 @@ public class DashboardController {
     @FXML
     private AnchorPane contentArea;
 
+    @FXML private Button btnUsuarios;
+    @FXML private Button btnClientes;
+    @FXML private Button btnEmpleados;
+    @FXML private Button btnProductos;
+    @FXML private Button btnServicios;
+    @FXML private Button btnFacturas;
+    @FXML private Button btnCitas;
+    @FXML private Button btnCerrarSesion;
+
     private SceneManager sceneManager;
+
+    @FXML
+    public void initialize() {
+        System.out.println("--- DIAGNOSTICO DE BOTONES ---");
+        System.out.println("btnUsuarios es nulo?: " + (btnUsuarios == null));
+        System.out.println("btnClientes es nulo?: " + (btnClientes == null));
+        System.out.println("btnEmpleados es nulo?: " + (btnEmpleados == null));
+        System.out.println("btnFacturas es nulo?: " + (btnFacturas == null));
+    }
+
+
+    public void setRolUsuario(String rol) {
+        System.out.println(">>> ROL RECIBIDO EN EL DASHBOARD: [" + rol + "]");
+        
+        if (rol != null && (rol.equals("2") || rol.toLowerCase().contains("cliente"))) {
+            System.out.println(">>> Aplicando restricciones de Cliente (Ocultando administración)");
+            ocultarBoton(btnUsuarios);
+            ocultarBoton(btnClientes);
+            ocultarBoton(btnEmpleados);
+            ocultarBoton(btnFacturas);
+        } else {
+            System.out.println(">>> Rol de Administrador detectado, mostrando todo.");
+        }
+    }
+
+    private void ocultarBoton(Button boton) {
+        if (boton != null) {
+            boton.setVisible(false);
+            boton.setManaged(false);
+        }
+    }
 
     private SceneManager getSceneManager() {
         if (sceneManager == null) {
@@ -55,10 +96,9 @@ public class DashboardController {
     private void cargarCitas(ActionEvent event) {
         getSceneManager().cargarVistaEnCentro(contentArea, "src/main/resources/view/usuarios-citas-view.fxml", "src/main/resources/css/usuarios-citas-view.css");
     }
-    
+     
     @FXML
     private void regresarLogin(ActionEvent event) {
         getSceneManager().showLoginView();
     }
-    
 }

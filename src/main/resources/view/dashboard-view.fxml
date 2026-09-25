@@ -16,14 +16,14 @@
    <left>
       <VBox prefWidth="230.0" spacing="12.0" styleClass="sidebar" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" onAction="#cargarUsuarios" text="Gestión de Usuarios" prefWidth="200.0" styleClass="sidebar-button" />
-            <Button mnemonicParsing="false" onAction="#cargarClientes" text="Gestión de Clientes" prefWidth="200.0" styleClass="sidebar-button" />
-            <Button mnemonicParsing="false" onAction="#cargarEmpleados" text="Gestión de Empleados" prefWidth="200.0" styleClass="sidebar-button" />
-            <Button mnemonicParsing="false" onAction="#cargarProductos" text="Productos / Compras" prefWidth="200.0" styleClass="sidebar-button" />
-            <Button mnemonicParsing="false" onAction="#cargarServicios" text="Catálogo de Servicios" prefWidth="200.0" styleClass="sidebar-button" />
-            <Button mnemonicParsing="false" onAction="#cargarFacturas" text="Facturación" prefWidth="200.0" styleClass="sidebar-button" />
-            <Button mnemonicParsing="false" onAction="#cargarCitas" text="Citas" prefWidth="200.0" styleClass="sidebar-button" />
-            <Button mnemonicParsing="false" onAction="#regresarLogin" text="Cerrar Sesión" prefWidth="200.0" styleClass="sidebar-button" />
+            <Button fx:id="btnUsuarios" mnemonicParsing="false" onAction="#cargarUsuarios" text="Gestión de Usuarios" prefWidth="200.0" styleClass="sidebar-button" />
+            <Button fx:id="btnClientes" mnemonicParsing="false" onAction="#cargarClientes" text="Gestión de Clientes" prefWidth="200.0" styleClass="sidebar-button" />
+            <Button fx:id="btnEmpleados" mnemonicParsing="false" onAction="#cargarEmpleados" text="Gestión de Empleados" prefWidth="200.0" styleClass="sidebar-button" />
+            <Button fx:id="btnProductos" mnemonicParsing="false" onAction="#cargarProductos" text="Productos / Compras" prefWidth="200.0" styleClass="sidebar-button" />
+            <Button fx:id="btnServicios" mnemonicParsing="false" onAction="#cargarServicios" text="Catálogo de Servicios" prefWidth="200.0" styleClass="sidebar-button" />
+            <Button fx:id="btnFacturas" mnemonicParsing="false" onAction="#cargarFacturas" text="Facturación" prefWidth="200.0" styleClass="sidebar-button" />
+            <Button fx:id="btnCitas" mnemonicParsing="false" onAction="#cargarCitas" text="Citas" prefWidth="200.0" styleClass="sidebar-button" />
+            <Button fx:id="btnCerrarSesion" mnemonicParsing="false" onAction="#regresarLogin" text="Cerrar Sesión" prefWidth="200.0" styleClass="sidebar-button" />
          </children>
       </VBox>
    </left>

@@ -27,7 +27,7 @@ public class ServicioController implements Initializable {
 
     private static final String RUTA_IMAGENES = "/main/resources/images/";
     private static final double ANCHO_TARJETA = 260;
-    private static final double ANCHO_IMAGEN = ANCHO_TARJETA - 32; // menos el padding de la tarjeta
+    private static final double ANCHO_IMAGEN = ANCHO_TARJETA - 32; 
     private static final double ALTO_IMAGEN = 150;
 
     @FXML private FlowPane contenedorServicios;
@@ -57,7 +57,6 @@ public class ServicioController implements Initializable {
         }
     }
 
-    // ------------------------------------------------------------ tarjeta
 
     private VBox crearTarjeta(Servicio servicio) {
         VBox tarjeta = new VBox(10);
@@ -85,7 +84,6 @@ public class ServicioController implements Initializable {
             tarjeta.getChildren().add(descripcion);
         }
 
-        // Empuja la fila de precio al fondo para que todas las tarjetas queden alineadas
         Region relleno = new Region();
         VBox.setVgrow(relleno, Priority.ALWAYS);
         tarjeta.getChildren().add(relleno);
@@ -107,13 +105,7 @@ public class ServicioController implements Initializable {
         return tarjeta;
     }
 
-    // ------------------------------------------------------------- imagen
-
-    /**
-     * Busca /main/resources/images/servicio-<id>.jpg (por ejemplo servicio-1.jpg).
-     * La foto se recorta al centro con la proporción de la tarjeta, sin deformarse.
-     * Si no existe, la tarjeta se muestra sin foto.
-     */
+ 
     private ImageView crearImagen(int idServicio) {
         String ruta = RUTA_IMAGENES + "servicio-" + idServicio + ".jpg";
 
@@ -123,23 +115,21 @@ public class ServicioController implements Initializable {
             return null;
         }
 
-        // Se carga manteniendo la proporción original (alto = 0 significa "automático")
         Image foto = new Image(in, ANCHO_IMAGEN * 2, 0, true, true);
         if (foto.isError()) {
             System.err.println("No se pudo leer la imagen " + ruta + ": " + foto.getException());
             return null;
         }
 
-        // Recorte centrado con la proporción de la tarjeta (sin deformar)
         double ratioDestino = ANCHO_IMAGEN / ALTO_IMAGEN;
         double ratioFoto = foto.getWidth() / foto.getHeight();
         double w, h, x, y;
-        if (ratioFoto > ratioDestino) {      // foto más ancha: se recortan los lados
+        if (ratioFoto > ratioDestino) {      
             h = foto.getHeight();
             w = h * ratioDestino;
             x = (foto.getWidth() - w) / 2;
             y = 0;
-        } else {                             // foto más alta: se recortan arriba y abajo
+        } else {                            
             w = foto.getWidth();
             h = w / ratioDestino;
             x = 0;

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package main.java.com.beauty.spa.salon.repository;
 
 import java.sql.PreparedStatement;
@@ -11,13 +7,10 @@ import java.sql.SQLException;
 import main.java.com.beauty.spa.salon.config.DataBaseConnection;
 import main.java.com.beauty.spa.salon.dto.request.LoginDTORequest;
 import main.java.com.beauty.spa.salon.dto.response.LoginDTOResponse;
-/**
- *
- * @author informatica
- */
+
 public class AuthRepository {
     public LoginDTOResponse findUserbyEmail(LoginDTORequest loginDTORequest){
-        String sql = "select u.nombre, u.apellido, u.contrasena, r.nombre_rol " +
+        String sql = "select u.nombre, u.apellido, u.contrasena, r.id_rol " +
                      "from usuarios AS u " +
                      "inner join roles as r " +
                      "on u.id_rol = r.id_rol " +
@@ -30,7 +23,7 @@ public class AuthRepository {
                         rs.getString("nombre"),
                         rs.getString("apellido"),
                         rs.getString("contrasena"),
-                        rs.getString("nombre_rol")
+                        rs.getString("id_rol") 
                     );
                 }
             }

@@ -35,7 +35,6 @@ public class RegistroController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // Carga de la imagen del banner lateral
         try {
             Image image = new Image(getClass().getResourceAsStream("/images/salon-registro.png"));
             if (image != null && imgBanner != null) {
@@ -52,7 +51,6 @@ public class RegistroController implements Initializable {
             }
         }
 
-        // Llenado del ComboBox de roles
         cmbRol.setItems(FXCollections.observableArrayList("1 - Administrador", "2 - Cliente"));
     }    
 

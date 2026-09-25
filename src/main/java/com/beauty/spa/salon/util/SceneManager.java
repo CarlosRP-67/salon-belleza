@@ -4,16 +4,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import javafx.scene.layout.AnchorPane;
+import main.java.com.beauty.spa.salon.controller.DashboardController;
 
 public class SceneManager {
 
     private final Stage stage;
     private static int idClienteActual;
+    private static String rolUsuarioActual = "1"; 
 
     public SceneManager(Stage stage) {
         this.stage = stage;
@@ -27,14 +28,58 @@ public class SceneManager {
         return idClienteActual;
     }
 
+    public static void setRolUsuarioActual(String rol) {
+        rolUsuarioActual = rol;
+    }
+
+    public static String getRolUsuarioActual() {
+        return rolUsuarioActual;
+    }
 
     public void showLoginView() {
         cargarVistaFisica("src/main/resources/view/login-view.fxml", "src/main/resources/css/login-view.css", "Beauty Spa - Iniciar Sesión");
     }
 
     public void showMainDashboard() {
+        String rutaFxml = "src/main/resources/view/dashboard-view.fxml";
+        String rutaCss = "src/main/resources/css/usuarios-citas-view.css";
+        
+        File archivoFxml = new File(rutaFxml);
+        if (!archivoFxml.exists()) {
+            System.err.println("¡ERROR! No existe el archivo físico en la ruta: " + archivoFxml.getAbsolutePath());
+            return;
+        }
 
-        cargarVistaFisica("src/main/resources/view/dashboard-view.fxml", "src/main/resources/css/usuarios-citas-view.css", "Beauty Spa - Menú Principal");
+        try (FileInputStream fis = new FileInputStream(archivoFxml)) {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(archivoFxml.getParentFile().toURI().toURL());
+            Parent root = loader.load(fis);
+
+            DashboardController dashboardController = loader.getController();
+            if (dashboardController != null) {
+                dashboardController.setRolUsuario(rolUsuarioActual);
+            }
+
+            Scene scene = new Scene(root, 880, 550);
+
+            if (rutaCss != null) {
+                File cssFile = new File(rutaCss);
+                if (cssFile.exists()) {
+                    scene.getStylesheets().add(cssFile.toURI().toString());
+                }
+            }
+
+            stage.setScene(scene);
+            stage.setTitle("Beauty Spa - Menú Principal");
+            stage.setMinWidth(750);
+            stage.setMinHeight(450);
+            stage.centerOnScreen();
+            stage.show();
+
+        } catch (IOException e) {
+            System.err.println("¡ERROR CRÍTICO! Falló la carga del Dashboard: " + rutaFxml);
+            e.printStackTrace();
+        }
     }
 
     public void showProductosView() {
@@ -44,17 +89,15 @@ public class SceneManager {
     public void showServicioView() {
         cargarVistaFisica("src/main/resources/view/servicio-view.fxml","src/main/resources/css/servicio-view.css", "Beauty Spa - Menú Principal");
     }
+    
     public void cargarVistaClasspath(String rutaFxml, String rutaCss, String titulo) {
-
         String fxmlFisico = "src/main/resources" + (rutaFxml.startsWith("/") ? rutaFxml : "/" + rutaFxml);
         String cssFisico = (rutaCss != null) ? "src/main/resources" + (rutaCss.startsWith("/") ? rutaCss : "/" + rutaCss) : null;
-        
         cargarVistaFisica(fxmlFisico, cssFisico, titulo);
     }
 
     public void cargarVistaFisica(String rutaFxml, String rutaCss, String titulo) {
         File archivoFxml = new File(rutaFxml);
-        
         if (!archivoFxml.exists()) {
             System.err.println("¡ERROR! No existe el archivo físico en la ruta: " + archivoFxml.getAbsolutePath());
             return;
@@ -62,9 +105,7 @@ public class SceneManager {
 
         try (FileInputStream fis = new FileInputStream(archivoFxml)) {
             FXMLLoader loader = new FXMLLoader();
-            
             loader.setLocation(archivoFxml.getParentFile().toURI().toURL());
-
             Parent root = loader.load(fis);
 
             Scene scene = new Scene(root, 880, 550);
@@ -73,8 +114,6 @@ public class SceneManager {
                 File cssFile = new File(rutaCss);
                 if (cssFile.exists()) {
                     scene.getStylesheets().add(cssFile.toURI().toString());
-                } else {
-                    System.out.println("Advertencia: No se encontró el CSS en: " + rutaCss);
                 }
             }
 
@@ -90,40 +129,41 @@ public class SceneManager {
             e.printStackTrace();
         }
     }
-   public void cargarVistaEnCentro(AnchorPane contentArea, String rutaFxml, String rutaCss) {
-    File archivoFxml = new File(rutaFxml);
-    if (!archivoFxml.exists()) {
-        System.err.println("¡ERROR! No existe el archivo físico en la ruta: " + archivoFxml.getAbsolutePath());
-        return;
-    }
 
-    try (FileInputStream fis = new FileInputStream(archivoFxml)) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(archivoFxml.getParentFile().toURI().toURL());
-        Parent vista = loader.load(fis);
+    public void cargarVistaEnCentro(AnchorPane contentArea, String rutaFxml, String rutaCss) {
+        File archivoFxml = new File(rutaFxml);
+        if (!archivoFxml.exists()) {
+            System.err.println("¡ERROR! No existe el archivo físico en la ruta: " + archivoFxml.getAbsolutePath());
+            return;
+        }
 
-        if (rutaCss != null && !rutaCss.isEmpty()) {
-            File cssFile = new File(rutaCss);
-            if (cssFile.exists()) {
-                String cssUrl = cssFile.toURI().toString();
-                if (!vista.getStylesheets().contains(cssUrl)) {
-                    vista.getStylesheets().add(cssUrl);
+        try (FileInputStream fis = new FileInputStream(archivoFxml)) {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(archivoFxml.getParentFile().toURI().toURL());
+            Parent vista = loader.load(fis);
+
+            if (rutaCss != null && !rutaCss.isEmpty()) {
+                File cssFile = new File(rutaCss);
+                if (cssFile.exists()) {
+                    String cssUrl = cssFile.toURI().toString();
+                    if (!vista.getStylesheets().contains(cssUrl)) {
+                        vista.getStylesheets().add(cssUrl);
+                    }
                 }
             }
+
+            contentArea.getChildren().setAll(vista);
+
+            if (vista instanceof AnchorPane) {
+                AnchorPane.setTopAnchor(vista, 0.0);
+                AnchorPane.setBottomAnchor(vista, 0.0);
+                AnchorPane.setLeftAnchor(vista, 0.0);
+                AnchorPane.setRightAnchor(vista, 0.0);
+            }
+
+        } catch (IOException e) {
+            System.err.println("¡ERROR CRÍTICO! Falló la carga de la vista en el centro: " + rutaFxml);
+            e.printStackTrace();
         }
-
-        contentArea.getChildren().setAll(vista);
-
-        if (vista instanceof AnchorPane) {
-            AnchorPane.setTopAnchor(vista, 0.0);
-            AnchorPane.setBottomAnchor(vista, 0.0);
-            AnchorPane.setLeftAnchor(vista, 0.0);
-            AnchorPane.setRightAnchor(vista, 0.0);
-        }
-
-    } catch (IOException e) {
-        System.err.println("¡ERROR CRÍTICO! Falló la carga de la vista en el centro: " + rutaFxml);
-        e.printStackTrace();
     }
-}
 }

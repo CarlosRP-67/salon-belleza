@@ -77,7 +77,6 @@ public class ProductoController implements Initializable {
         }
     }
 
-    // --- MÉTODOS CRUD ---
     private void configurarColumnas() {
         if (colIdProducto != null) colIdProducto.setCellValueFactory(new PropertyValueFactory<>("idProducto"));
         if (colNombre != null) colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
@@ -182,9 +181,7 @@ public class ProductoController implements Initializable {
         }
     }
 
-    /**
-     * Método requerido por el FXML de productos para el botón Limpiar.
-     */
+
     @FXML
     public void limpiarCampos(ActionEvent event) {
         limpiarCamposCrud();
@@ -219,7 +216,6 @@ public class ProductoController implements Initializable {
         return true;
     }
 
-    // --- MÉTODOS COMPRA / CATÁLOGO ---
     private void configurarComboBoxProductos() {
         StringConverter<ProductoUsuario> converter = new StringConverter<>() {
             @Override
@@ -301,7 +297,6 @@ public class ProductoController implements Initializable {
             cargarProductosDisponibles();
             limpiarFormularioCompra();
         } else {
-            // Mensaje modificado para que no mencione la base de datos
             mostrarAlerta(Alert.AlertType.ERROR, "Error en la compra", "No se pudo completar la compra.");
         }
     }
@@ -314,7 +309,6 @@ public class ProductoController implements Initializable {
         if (spCantidad != null && spCantidad.getValueFactory() != null) spCantidad.getValueFactory().setValue(1);
     }
 
-    // --- UTILIDAD GENERAL ---
     private void mostrarAlerta(Alert.AlertType tipo, String titulo, String mensaje) {
         Alert alerta = new Alert(tipo);
         alerta.setTitle(titulo);

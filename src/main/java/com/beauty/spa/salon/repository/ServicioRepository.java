@@ -19,7 +19,7 @@ public class ServicioRepository {
     public List<Servicio> findAll() throws SQLException {
         List<Servicio> servicios = new ArrayList<>();
 
-        try (Connection con = DataBaseConnection.getDataBaseConnection(); // (*) el mismo método que usan tus otros repository
+        try (Connection con = DataBaseConnection.getDataBaseConnection();
              PreparedStatement ps = con.prepareStatement(SELECT_ALL);
              ResultSet rs = ps.executeQuery()) {
 

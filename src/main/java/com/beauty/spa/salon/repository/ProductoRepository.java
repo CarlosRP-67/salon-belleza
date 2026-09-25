@@ -119,8 +119,6 @@ public class ProductoRepository {
     }
 
     public boolean realizarCompra(int idCliente, int idProducto, int cantidad, double total) {
-        // Si el idCliente es 0 o negativo (porque no hay sesión iniciada), 
-        // asignamos por defecto el ID 1 para que cualquier usuario pueda comprar sin restricciones.
         if (idCliente <= 0) {
             idCliente = 1; 
         }
@@ -138,12 +136,10 @@ public class ProductoRepository {
                  PreparedStatement stmDetalle = conn.prepareStatement(sqlDetalle);
                  PreparedStatement stmStock = conn.prepareStatement(sqlUpdateStock)) {
 
-                // 1. Insertar la cabecera de la factura
                 stmFactura.setInt(1, idCliente);
                 stmFactura.setDouble(2, total);
                 stmFactura.executeUpdate();
 
-                // Obtener el ID de la factura generada automáticamente
                 ResultSet generatedKeys = stmFactura.getGeneratedKeys();
                 int idFactura = -1;
                 if (generatedKeys.next()) {
@@ -152,7 +148,6 @@ public class ProductoRepository {
                     throw new SQLException("No se pudo obtener el ID de la factura generada.");
                 }
 
-                // 2. Insertar el detalle de la compra vinculado
                 double precioUnitario = total / cantidad;
                 stmDetalle.setInt(1, idFactura);
                 stmDetalle.setInt(2, idProducto);
@@ -160,12 +155,10 @@ public class ProductoRepository {
                 stmDetalle.setDouble(4, precioUnitario);
                 stmDetalle.executeUpdate();
 
-                // 3. Descontar el stock del producto
                 stmStock.setInt(1, cantidad);
                 stmStock.setInt(2, idProducto);
                 stmStock.executeUpdate();
 
-                // Confirmar transacción
                 conn.commit();
                 return true;
 
